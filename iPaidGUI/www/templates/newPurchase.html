@@ -1,0 +1,51 @@
+<ion-modal-view class="newPurchase">
+    <ion-header-bar>
+        <button class="button button-clear button-positive" ng-click="closePurchase()">Cancel</button>
+        <h1 class="title">New Purchase</h1>
+
+
+        <button class="button button-clear button-positive" ng-click="closePurchase()">Add</button>
+    </ion-header-bar>
+
+
+    <ion-content>
+        <div class="list">
+            <a class="item item-divider"></a>
+            <label class="item item-input">
+                <span class="input-label">Title</span>
+                <input type="text">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Date</span>
+                <input type="date">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Amount</span>
+                <input type="number">
+            </label>
+
+            <a class="item item-divider"></a>
+            <a style="text-align:center; color: rgb(56,126, 245);" class="item">Everybody</a>
+            <a class="item item-avatar" href="#">
+                <img src="https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png">
+                <h2>Ben Sparrow</h2><h2 style="position:absolute; top: 15px; right: 15px;" >0x</h2>
+                 <p style="float:left;">0x</p><p style="float:right;">00,00 €</p>
+            </a>
+            <a class="item item-avatar" href="#">
+                <img src="https://avatars3.githubusercontent.com/u/11214?v=3&s=460">
+                <h2>Max Lynx</h2>
+                <p style="float:left;">1x</p><p style="float:right;">10,00 €</p>
+            </a>
+            <a class="item item-avatar" href="#">
+                <img src="https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg">
+                <h2>Andrew Jostlen</h2>
+                <p style="float:left;">1x</p><p style="float:right;">10,00 €</p>
+            </a>
+              <a class="item item-avatar" href="#">
+                <img src="https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg">
+                <h2>Adam Bradleyson</h2>
+                <p style="float:left;">1x</p><p style="float:right;">10,00 €</p>
+            </a>
+        </div>
+    </ion-content>
+</ion-modal-view>

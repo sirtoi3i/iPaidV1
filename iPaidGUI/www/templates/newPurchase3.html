@@ -1,0 +1,42 @@
+    <ion-modal-view view-title="New Purchase">
+     <ion-header-bar>
+           <button class="button button-clear button-positive" ng-click="closePurchase()">Cancel</button>
+    <h1 class="title">New Purchase</h1>
+    
+    
+      <button class="button button-clear button-positive" ng-click="closePurchase()">Add</button>
+  </ion-header-bar>
+    
+    
+  <ion-content>
+      <div class="list">
+          <a class="item item-divider"></a>
+      <label class="item item-input">
+        <span class="input-label">Title</span>
+        <input type="text">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Date</span>
+        <input type="date">
+      </label>
+          <label class="item item-input">
+        <span class="input-label">Amount</span>
+        <input type="number">
+      </label>
+
+    <a class="item item-divider"></a>
+    <a style="text-align:center;" class="item" href="#">
+       Everybody
+    </a>
+     <a style="text-align:center; color: rgb(56,126, 245);" class="item " href="#">
+     <span style="position:absolute; top: 16px; left: 16px;">1x</span>  Daniel  <span style="position:absolute; top: 16px; right: 16px;">10.00 €</span>
+  </a>
+    <a style="text-align:center;" class="item " href="#">
+        <span style="position:absolute; top: 16px; left: 16px;">0x</span>  Michel  <span style="position:absolute; top: 16px; right: 16px;">0.00 €</span>
+  </a>
+    <a style="text-align:center; color: rgb(56,126, 245);" class="item " href="#">
+         <span style="position:absolute; top: 16px; left: 16px;">1x</span>  Tobi  <span style="position:absolute; top: 16px; right: 16px;">10.00 €</span>
+  </a>
+</div>
+  </ion-content>
+</ion-modal-view>

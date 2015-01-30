@@ -1,0 +1,8 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/Users/Tobi/Documents/Development/ionicProjects/iPaidGUIv1/platforms/ios/build/emulator/iPaidGUIv1.app/www/plugins/org.apache.cordova.device/www/device.js",
+        "/Users/Tobi/Documents/Development/ionicProjects/iPaidGUIv1/platforms/ios/build/emulator/iPaidGUIv1.app/www/lib/ionic/js/angular/angular.js",
+        "/Users/Tobi/Documents/Development/ionicProjects/iPaidGUIv1/platforms/ios/build/emulator/iPaidGUIv1.app/www/lib/ionic/js/angular-ui/angular-ui-router.min.js",
+        "/Users/Tobi/Documents/Development/ionicProjects/iPaidGUIv1/www/js/app.js"
+    ]
+}

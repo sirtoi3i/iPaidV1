@@ -1,0 +1,50 @@
+<ion-view view-title="Edit Purchase">
+    
+     <ion-nav-buttons side="right">
+        <a href="#/app/purchase">      
+            <button class="button button-clear button-positive">
+            Update</button>
+        </a>
+        </ion-nav-buttons>
+    
+  <ion-content>
+      <div class="list purchaseDetails">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Title</span>
+            <input type="text" placeholder="Groceries" value="Groceries">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Date</span>
+            <input type="date" placeholder="12.01.1989" value="19.10.2014">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Amount</span>
+            <input type="number"  value="45.78">
+          </label>
+     </div> 
+            
+    <div class="list">
+      <a class="item item-icon-left item-divider" href="#">
+        <i class="icon ion-ios7-person"></i>
+        Participants
+      </a>
+        <a style="text-align:center; color: rgb(56,126, 245);" class="item" href="#">
+           Everybody
+        </a>
+         <a style="text-align:center; color: rgb(56,126, 245);" class="item " href="#">
+         <span style="position:absolute; top: 16px; left: 16px;">1x</span>  Daniel  <span style="position:absolute; top: 16px; right: 16px;">15,25 €</span>
+      </a>
+        <a style="text-align:center; color: rgb(56,126, 245);" class="item " href="#">
+            <span style="position:absolute; top: 16px; left: 16px;">1x</span>  Michel  <span style="position:absolute; top: 16px; right: 16px;">15,25 €</span>
+      </a>
+        <a style="text-align:center; color: rgb(56,126, 245);" class="item " href="#">
+             <span style="position:absolute; top: 16px; left: 16px;">1x</span>  Tobi  <span style="position:absolute; top: 16px; right: 16px;">15,25 €</span>
+      </a>     
+    </div>
+      
+      
+  </ion-content>
+    <div class="bar bar-footer bar-stable">
+        <div style="color: red;" class="title">Delete Purchase</div>
+      </div>
+</ion-view>

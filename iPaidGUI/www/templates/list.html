@@ -1,0 +1,27 @@
+<ion-view view-title="{{list.name}}">
+    
+    <ion-nav-buttons side="right">
+        <a ng-click="newPurchase()">      
+            <button class="button button-icon button-clear button-positive ion-ios7-plus-empty">
+            </button>
+        </a>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="card">
+            <div class="item item-text-wrap">
+                My Total Balance:  <div style="float:right;" class="{{list.balanceClass}}">    {{list.balance}} €</div>
+            </div> 
+        </div>
+
+        <ion-list>
+            <ion-item class="item-avatar  item-icon-right" ng-repeat="purchase in list.purchases" type="item-text-wrap" href="#/app/purchases/{{purchase.id}}">
+                <img ng-src="{{purchase.face}}">
+                <h2>{{purchase.title}}</h2>
+
+                <div style="float:left;" class="list_date">{{purchase.date}} </div> <div style="float:right;">      {{purchase.amount}} €</div>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+</ion-view>
