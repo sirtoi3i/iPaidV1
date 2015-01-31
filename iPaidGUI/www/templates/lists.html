@@ -11,10 +11,14 @@
     <ion-list>
       <ion-item class="item-icon-left item-icon-right" ng-repeat="list in lists" type="item-text-wrap" href="#/app/lists/{{list.id}}">
         <i class="{{list.icon}}"></i>
-        <h2>{{list.name}}</h2>
-        <div style="float:left">{{list.date}}</div> <div style="float:right" class="{{list.balanceClass}}"> {{list.balance}} € </div>
+
+          <h2>{{list.title}}</h2>
+
+          <div style="float:left">{{list.date}}</div>
+          <div style="float:right"> {{list.balance}} €</div>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>
+

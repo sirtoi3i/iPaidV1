@@ -2,7 +2,7 @@
 
     <ion-nav-buttons side="right">
 
-        <button class="button button-clear button-positive" ng-click="saveList(list)">
+        <button class="button button-clear button-positive" ng-click="saveList()">
             Done
         </button>
 
@@ -10,15 +10,12 @@
 
 
     <ion-content>
-        <button class="button button-clear button-positive" ng-click="saveList(list)">
-            Done
-        </button>
 
         <form>
             <div class="row">
                 <div class="col">
                     <a href="#" ng-click="openCat()">
-                        <i id="listCat" ng-model="list.icon" ng-class="icon"></i>
+                        <i id="listCat" ng-class="list.icon"></i>
                     </a>
                 </div>
                 <div class="col col-75">
@@ -27,16 +24,7 @@
                     <input type="text" placeholder="WG Mannheim" ng-model="list.title"/>
                 </div>
             </div>
-
-
         </form>
-
-
-        <ion-list>
-            <ion-item ng-repeat="todo in todos">
-                {{todo.titleTBo}}
-            </ion-item>
-        </ion-list>
     </ion-content>
 
 

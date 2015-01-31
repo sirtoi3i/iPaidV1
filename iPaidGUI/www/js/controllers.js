@@ -48,12 +48,45 @@ angular.module('starter.controllers', [])
             }, 1000);
         };
     })
+    .controller('MyCtrl', function ($scope, $ionicHistory) {
+        $scope.myGoBack = function () {
+            $ionicHistory.goBack();
+        };
+    })
+
+    .controller('AdminCtrl', function ($scope) {
+
+        $scope.delDBs = function () {
+
+            localDB.destroy(function (err, info) {
+            });
+            remoteDB.destroy(function (err, info) {
+            });
+        };
+
+
+    })
 
     .controller('ListsCtrl', function ($scope, Lists) {
-        $scope.lists = Lists.all();
-        $scope.remove = function (list) {
-            Lists.remove(list);
-        }
+        $scope.lists = [];
+
+        localDB.allDocs({include_docs: true}, function (err, response) {
+
+            angular.forEach(response.rows, function (value, key) {
+                $scope.lists.push(value.doc);
+            }, console.debug(""));
+
+        });
+
+        //console.debug(JSON.stringify(Lists.all()));
+        //$scope.lists=Lists.all();
+
+        $scope.$on('add', function (event, list) {
+            console.debug("add");
+            console.debug(JSON.stringify(list));
+            $scope.lists.push(list);
+        });
+
     })
 
     .controller('ListDetailCtrl', function ($scope, $stateParams, Lists) {
@@ -73,9 +106,9 @@ angular.module('starter.controllers', [])
         $scope.list = Lists.get($stateParams.purchaseId);
     })
 
-    .controller('NewListCtrl', function ($scope, $stateParams, $ionicPopup, $window, $ionicModal, PouchDBListener) {
-
-
+    .controller('NewListCtrl', function ($scope, $stateParams, $ionicPopup, $ionicHistory, $window, $ionicModal, PouchDBListener) {
+        $scope.lists = [];
+        $scope.list = [];
         // Create the login modal that we will use later
         $ionicModal.fromTemplateUrl('templates/catChoice.html', {
             scope: $scope
@@ -83,10 +116,10 @@ angular.module('starter.controllers', [])
             $scope.modal = modal;
         });
 
-        $scope.icon = "icon ion-ios7-plus-outline cat";
+        $scope.list.icon = "icon ion-ios7-plus-outline cat";
         $scope.returnCat = function ($event) {
-            $scope.icon = $event.currentTarget.className;
-            list.icon = $scope.icon;
+            $scope.list.icon = $event.currentTarget.className;
+
             $scope.modal.hide();
         }
 
@@ -101,55 +134,30 @@ angular.module('starter.controllers', [])
         };
 
 
-        $scope.todos = [];
+        $scope.saveList = function () {
+            var listObj = {
+                _id: "tobi" + "list" + new Date().toJSON(),
+                title: $scope.list.title,
+                date: '01.09.2013',
+                balance: '125,00',
+                icon: $scope.list.icon
+            };
 
-
-        $scope.saveList = function (list) {
-            console.log("$scope.listTitle");
-            console.log(list.title);
-            console.log(list.icon);
-            localDB.post({list: list});
+            localDB.put(listObj);
+            $ionicHistory.goBack();
         };
 
-
-        $scope.$on('add', function (event, todo) {
-            $scope.todos.push(todo);
+        $scope.$on('add', function (event, list) {
+            $scope.lists.push(list);
         });
 
         $scope.$on('delete', function (event, id) {
-            for (var i = 0; i < $scope.todos.length; i++) {
-                if ($scope.todos[i]._id === id) {
-                    $scope.todos.splice(i, 1);
+            for (var i = 0; i < $scope.lists.length; i++) {
+                if ($scope.lists[i]._id === id) {
+                    $scope.lists.splice(i, 1);
                 }
             }
         });
 
-        $scope.create = function () {
-            $ionicPopup.prompt({
-                title: 'Enter a new TODO item',
-                inputType: 'text'
-            })
-                .then(function (result) {
-                    if (result !== "") {
-                        if ($scope.hasOwnProperty("todos") !== true) {
-                            $scope.todos = [];
-                        }
-                        console.log("Result: " + result);
-                        localDB.post({titleTBo: result});
-                    } else {
-                        console.log("Action not completed");
-                    }
-                });
-        };
 
-    })
-    .controller('PlaylistsCtrl', function ($scope) {
-        $scope.playlists = [
-            {title: 'Reggae', id: 1},
-            {title: 'Chill', id: 2},
-            {title: 'Dubstep', id: 3},
-            {title: 'Indie', id: 4},
-            {title: 'Rap', id: 5},
-            {title: 'Cowbell', id: 6}
-        ];
     })
