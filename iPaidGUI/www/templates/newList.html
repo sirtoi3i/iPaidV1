@@ -1,46 +1,43 @@
 <ion-view view-title="New List">
 
     <ion-nav-buttons side="right">
-        <a href="#/app/purchase">      
-            <button class="button button-clear button-positive">
-                Done</button>
-        </a>
+
+        <button class="button button-clear button-positive" ng-click="saveList(list)">
+            Done
+        </button>
+
     </ion-nav-buttons>
 
+
     <ion-content>
+        <button class="button button-clear button-positive" ng-click="saveList(list)">
+            Done
+        </button>
 
-        <div class="row"> 
-            <div class="col">
-                <a href="#"  ng-click="openCat()"> 
-                    <i id="listCat" ng-class="icon"></i>
-                </a> 
+        <form>
+            <div class="row">
+                <div class="col">
+                    <a href="#" ng-click="openCat()">
+                        <i id="listCat" ng-model="list.icon" ng-class="icon"></i>
+                    </a>
+                </div>
+                <div class="col col-75">
+                    <span style="float:left">Title</span>
+                    <br>
+                    <input type="text" placeholder="WG Mannheim" ng-model="list.title"/>
+                </div>
             </div>
-            <div class="col col-75">   <span style="float:left">Title</span><br><input type="text" placeholder="WG Mannheim"></div>
-        </div>
 
-        <div class="list">
-            
-            <label class="item item-input">
-                <span class="input-label">Amount</span>
-                <input type="number">
-            </label>
 
-            <a class="item item-divider"></a>
-            <a class="item item-avatar" href="#">
-                <img src="https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png">
-                <h2>Ben Sparrow</h2>
-                <p style="float:left;">0x</p><p style="float:right;">00,00 €</p>
-            </a>
-            <a class="item item-avatar" href="#">
-                <img src="https://avatars3.githubusercontent.com/u/11214?v=3&s=460">
-                <h2>Max Lynx</h2>
-                <p style="float:left;">1x</p><p style="float:right;">10,00 €</p>
-            </a>
-            <a class="item item-avatar" href="#">
-                <img src="https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg">
-                <h2>Andrew Jostlen</h2>
-                <p style="float:left;">1x</p><p style="float:right;">10,00 €</p>
-            </a>
-        </div>
+        </form>
+
+
+        <ion-list>
+            <ion-item ng-repeat="todo in todos">
+                {{todo.titleTBo}}
+            </ion-item>
+        </ion-list>
     </ion-content>
+
+
 </ion-view>
