@@ -1,0 +1,56 @@
+<ion-view view-title="Title" class="purchaseTitle">   
+    <ion-nav-bar>
+        <ion-nav-back-button class="button-clear button-positive">
+            Back
+        </ion-nav-back-button>
+
+        <ion-nav-buttons side="right">
+            <a href="#/app/purchase">      
+                <button class="button button-clear button-positive">
+                    Done</button>
+            </a>
+        </ion-nav-buttons>    
+    </ion-nav-bar>
+    <ion-content>
+        <div class="list">
+            <a class="item item-divider"><span style="position: absolute; bottom: 10px; left: 15px;">Enter Title</span></a>
+            <label class="item item-input">
+                <input type="text" placeholder="Title">
+            </label>
+            <a class="item item-divider"><span style="position: absolute; bottom: 10px; left: 15px;">Or choose Category</span></a>
+            <a class="item item-icon-left" ng-controller="MyCtrl" ng-click="myGoBack()">
+                <i class="icon icon ion-ios7-cart"></i>
+                Groceries
+            </a>
+            <a class="item item-icon-left" ng-controller="MyCtrl" ng-click="myGoBack()">
+                <i class="icon icon ion-music-note"></i>
+                Music
+            </a>
+            <a class="item item-icon-left" href="#">
+                <i class="icon icon icon ion-bag"></i>
+                Shopping
+            </a>
+            <a class="item item-icon-left" href="#">
+                <i class="icon icon ion-coffee"></i>
+                Coffee
+            </a>
+            <a class="item item-icon-left" href="#">
+                <i class="icon icon ion-ios7-wineglass"></i>
+                Drinks
+            </a>
+            <a class="item item-icon-left" href="#">
+                <i class="icon icon ion-icecream"></i>
+                Icecream
+            </a>
+            <a class="item item-icon-left" href="#">
+                <i class="icon icon ion-pizza"></i>
+                Food
+            </a>
+            <a class="item item-icon-left" href="#">
+                <i class="icon icon ion-model-s"></i>
+                Fuel
+            </a>
+
+        </div>
+    </ion-content>
+</ion-view>

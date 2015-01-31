@@ -14,7 +14,7 @@
     color: rgb(56,126, 245);
 }
 
-.newPurchase .scroll-content, .profile .scroll-content  {
+.newPurchase .scroll-content, .profile .scroll-content, .purchaseTitle .scroll-content  {
     background-color: #f5f5f5;
 }
 
@@ -36,4 +36,9 @@ i.cat {
 }
 .col{
     text-align: center;
+}
+
+.purchaseTitle .item-divider {
+    font-weight: normal;
+    height: 54px;
 }

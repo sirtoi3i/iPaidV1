@@ -69,6 +69,12 @@ angular.module('starter.controllers', [])
   $scope.user = Users.get($stateParams.userId);
 })
 
+.controller('MyCtrl', function($scope, $ionicHistory) {
+     $scope.myGoBack = function() {
+        $ionicHistory.goBack();
+    };
+})
+
 
 .controller('PurchaseDetailCtrl', function($scope, $stateParams, Lists) {
   $scope.list = Lists.get($stateParams.purchaseId);

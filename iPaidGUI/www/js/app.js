@@ -70,6 +70,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
   
+      .state('app.purchaseTitle', {
+        url: "/purchaseTitle",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/purchaseTitle.html"
+            }
+        }
+    })
+  
   .state('app.purchase', {
     url: "/purchases/:purchaseId",
     views: {
