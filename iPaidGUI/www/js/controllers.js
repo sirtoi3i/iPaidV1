@@ -21,22 +21,6 @@ angular.module('starter.controllers', [])
         };
 
 
-        $ionicModal.fromTemplateUrl('templates/newPurchase.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.modal = modal;
-        });
-
-        // Triggered in the login modal to close it
-        $scope.closePurchase = function () {
-            $scope.modal.hide();
-        };
-
-        // Open the purchase modal
-        $scope.newPurchase = function () {
-            $scope.modal.show();
-        };
-
         // Perform the login action when the user submits the login form
         $scope.doLogin = function () {
             console.log('Doing login', $scope.loginData);
@@ -54,43 +38,65 @@ angular.module('starter.controllers', [])
         };
     })
 
-    .controller('AdminCtrl', function ($scope) {
+    .controller('AdminCtrl', function ($scope, pouchWrapper) {
 
         $scope.delDBs = function () {
+            pouchWrapper.removeAll();
 
-            localDB.destroy(function (err, info) {
-            });
-            remoteDB.destroy(function (err, info) {
-            });
         };
 
 
     })
 
-    .controller('ListsCtrl', function ($scope, Lists) {
-        $scope.lists = [];
 
-        localDB.allDocs({include_docs: true}, function (err, response) {
+    .controller('ListDetailCtrl', function ($scope, $stateParams, pouchPurchWrapper, pouchListWrapper, $ionicModal, $ionicHistory) {
+        $scope.purch = {};
+        pouchListWrapper.get($stateParams.listId).then(
+            function onSuccess(doc) {
+                $scope.list = doc;
+            },
+            function onError(err) {
+                $scope.list = null;
+            });
 
-            angular.forEach(response.rows, function (value, key) {
-                $scope.lists.push(value.doc);
-            }, console.debug(""));
+
+        $scope.purchases = [];
+
+        $scope.$on('newPurch', function (event, purch) {
+            $scope.purchases.push(purch);
 
         });
 
-        //console.debug(JSON.stringify(Lists.all()));
-        //$scope.lists=Lists.all();
 
-        $scope.$on('add', function (event, list) {
-            console.debug("add");
-            console.debug(JSON.stringify(list));
-            $scope.lists.push(list);
+        $ionicModal.fromTemplateUrl('templates/newPurchase.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.modal = modal;
         });
 
-    })
 
-    .controller('ListDetailCtrl', function ($scope, $stateParams, Lists) {
-        $scope.list = Lists.get($stateParams.listId);
+        $scope.closePurchase = function () {
+            $scope.modal.hide();
+        };
+
+
+        $scope.newPurchase = function () {
+            $scope.modal.show();
+        };
+
+
+        $scope.savePurchase = function () {
+
+            pouchPurchWrapper.add($scope.purch, $stateParams.listId).then(function (res) {
+                console.log(res);
+            }, function (reason) {
+                console.log(reason);
+            });
+            $ionicHistory.goBack();
+            $scope.modal.show();
+        };
+
+
     })
 
     .controller('UsersCtrl', function ($scope, Users) {
@@ -106,10 +112,38 @@ angular.module('starter.controllers', [])
         $scope.list = Lists.get($stateParams.purchaseId);
     })
 
-    .controller('NewListCtrl', function ($scope, $stateParams, $ionicPopup, $ionicHistory, $window, $ionicModal, PouchDBListener) {
+
+    .controller('ListsCtrl', function ($scope, pouchListener, pouchListWrapper) {
+
+
+        $scope.remove = function (id) {
+            pouchListWrapper.remove(id).then(function (res) {
+//      console.log(res);
+            }, function (reason) {
+                console.log(reason);
+            })
+        };
+
         $scope.lists = [];
-        $scope.list = [];
-        // Create the login modal that we will use later
+
+        $scope.$on('newList', function (event, l) {
+            $scope.lists.push(l);
+        });
+
+        $scope.$on('delList', function (event, id) {
+            for (var i = 0; i < $scope.lists.length; i++) {
+                if ($scope.lists[i]._id === id) {
+                    $scope.lists.splice(i, 1);
+                }
+            }
+        });
+
+
+    })
+
+    .controller('NewListCtrl', function ($scope, pouchListener, pouchListWrapper, $stateParams, $ionicHistory, $ionicModal) {
+
+        //CAT Modal
         $ionicModal.fromTemplateUrl('templates/catChoice.html', {
             scope: $scope
         }).then(function (modal) {
@@ -119,45 +153,25 @@ angular.module('starter.controllers', [])
         $scope.list.icon = "icon ion-ios7-plus-outline cat";
         $scope.returnCat = function ($event) {
             $scope.list.icon = $event.currentTarget.className;
-
             $scope.modal.hide();
         }
 
-        // Triggered in the login modal to close it
         $scope.closeCat = function () {
             $scope.modal.hide();
         };
 
-        // Open the login modal
         $scope.openCat = function () {
             $scope.modal.show();
         };
 
 
         $scope.saveList = function () {
-            var listObj = {
-                _id: "tobi" + "list" + new Date().toJSON(),
-                title: $scope.list.title,
-                date: '01.09.2013',
-                balance: '125,00',
-                icon: $scope.list.icon
-            };
-
-            localDB.put(listObj);
+            pouchListWrapper.add($scope.list.title, '01.09.2013', '125,00', $scope.list.icon).then(function (res) {
+                console.log(res);
+            }, function (reason) {
+                console.log(reason);
+            });
             $ionicHistory.goBack();
         };
-
-        $scope.$on('add', function (event, list) {
-            $scope.lists.push(list);
-        });
-
-        $scope.$on('delete', function (event, id) {
-            for (var i = 0; i < $scope.lists.length; i++) {
-                if ($scope.lists[i]._id === id) {
-                    $scope.lists.splice(i, 1);
-                }
-            }
-        });
-
 
     })
