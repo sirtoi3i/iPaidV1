@@ -150,6 +150,8 @@ angular.module('starter.controllers', [])
             $scope.modal = modal;
         });
 
+
+        $scope.list = {};
         $scope.list.icon = "icon ion-ios7-plus-outline cat";
         $scope.returnCat = function ($event) {
             $scope.list.icon = $event.currentTarget.className;
