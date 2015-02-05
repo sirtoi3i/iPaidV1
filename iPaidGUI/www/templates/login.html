@@ -1,25 +1,27 @@
-<ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">Login</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">Close</button>
-    </div>
-  </ion-header-bar>
+<ion-view class="loginView">
   <ion-content>
-    <form ng-submit="doLogin()">
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.username">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
-        </label>
-        <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
-        </label>
-      </div>
-    </form>
+      
+        <div class="list list-inset">
+          <button class="button button-block button-positive icon-left ion-social-facebook">Facebook</button>
+            <button class="button button-block button-assertive icon-left ion-social-googleplus">Google</button>
+       </div>
+        
+        <span class="input-label">or use your email</span>
+       
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" placeholder="Email" ng-model="profile.email" >
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="Password" ng-model="profile.password" >
+            </label>
+        </div>
+        
+       
+        <div class="list list-inset">
+          <button class="button button-block" ng-click="login()">Log in</button>
+          <button class="button button-block" ng-click="register()">Register</button>
+       </div>
+   
   </ion-content>
-</ion-modal-view>
+</ion-view>

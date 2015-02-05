@@ -19,6 +19,83 @@ angular.module('starter.services', [])
 
     })
 
+ .
+    factory('pouchProfileWrapper', function ($q, $rootScope, pouchDB) {
+
+        return {
+            
+            add: function (profile) {
+                var tempProfileObj = {
+                    _id: profile.email,
+                    type: 'profile',
+                    email: profile.email,
+                    firstName: profile.firstName,
+                    lastName: profile.lastName,
+                    password: profile.password,
+                    picture: null
+                };
+
+                var deferred = $q.defer();
+                console.log(JSON.stringify(tempProfileObj));
+                pouchDB.post(tempProfileObj, function (err, res) {
+                    $rootScope.$apply(function () {
+                        if (err) {
+                            deferred.reject(err)
+                        } else {
+                            deferred.resolve(res)
+                        }
+                    });
+                });
+                return deferred.promise;
+            },
+            all: function () {
+                console.log("SCHEINT MAN NIEEEE ZU BRAUCHEN DA IMMER NEW AUFGERUFEN WIRD!?");
+                var profiles = [];
+                pouchDB.allDocs({include_docs: true}, function (err, response) {
+
+                    angular.forEach(response.rows, function (value, key) {
+                        profiles.push(value.doc);
+                    }, console.debug(""));
+
+                });
+                return profiles;
+            },
+            get: function (profileId) {
+
+                return pouchDB.get(profileId, function (err, doc) {
+                });
+
+            },
+            removeAll: function () {
+                //   pouchDB.destroyDBs();
+                //  pouchDB.this.des
+
+            },
+            remove: function (id) {
+                var deferred = $q.defer();
+                pouchDB.get(id, function (err, doc) {
+                    $rootScope.$apply(function () {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            pouchDB.remove(doc, function (err, res) {
+                                $rootScope.$apply(function () {
+                                    if (err) {
+                                        deferred.reject(err)
+                                    } else {
+                                        deferred.resolve(res)
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+                return deferred.promise;
+            }
+        }
+
+    })
+
 
     .
     factory('pouchPurchWrapper', function ($q, $rootScope, pouchDB) {
@@ -62,7 +139,7 @@ angular.module('starter.services', [])
                 return lists;
             },
             get: function (listId) {
-
+                console.log('get list');
                 return pouchDB.get(listId, function (err, doc) {
                 });
 

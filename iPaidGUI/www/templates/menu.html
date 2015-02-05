@@ -33,7 +33,7 @@
           <i class="icon ion-arrow-graph-up-right"></i>
              My Balance
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/profile" class="item item-icon-left">
+        <ion-item nav-clear menu-close href="#/app/profile/mklein@web.de" class="item item-icon-left">
               <i class="icon ion-ios7-person"></i>
             Profile
         </ion-item>
@@ -43,10 +43,12 @@
           </ion-item>
       </ion-list>
     </ion-content>
-      <div class="bar bar-footer">
-    <div class="bar bar-footer bar-stable">
-  <div class="title">Logout</div>
-</div>
-</div>
+     
+      <ion-footer-bar align-title="left" class="bar-assertive">
+          <div class="title" ng-click="logout()">
+              Logout
+          </div>
+      </ion-footer-bar>
+
   </ion-side-menu>
 </ion-side-menus>

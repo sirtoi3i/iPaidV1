@@ -1,0 +1,32 @@
+<ion-view class="loginView">
+  <ion-content>
+   <div class="list">
+       
+       <div style="padding-bottom: 0px;" class="row responsive-sm">
+           <div class="col" style="text-align: center; padding-bottom: 0px;"><div class="profilePicDefault"> <i class="icon ion-ios7-person"></i></div><div style="color: rgb(56,126, 245);">edit</div></div>
+       </div>
+       
+       <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" placeholder="Email" ng-model="profile.email">
+            </label>
+           <label class="item item-input">
+                <input type="text" placeholder="First Name" ng-model="profile.firstName">
+            </label>
+           <label class="item item-input">
+                <input type="text" placeholder="Last Name" ng-model="profile.lastName">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="Password" ng-model="profile.password">
+            </label>
+        </div>
+        
+       
+        <div class="list list-inset">
+          <button class="button button-block" ng-click="register()">Register</button>
+          <button class="button button-block" ng-click="cancel()">Cancel</button>
+       </div>
+
+      </div>
+  </ion-content>
+</ion-view>

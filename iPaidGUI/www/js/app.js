@@ -30,6 +30,18 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "templates/menu.html",
             controller: 'AppCtrl'
         })
+    
+          .state('login', {
+            url: "/app/login",
+                    templateUrl: "templates/login.html",
+                    controller: 'LoginCtrl'  
+        })
+    
+        .state('register', {
+            url: "/register",
+            templateUrl: "templates/register.html",
+                    controller: 'RegisterCtrl'  
+        })
 
         .state('app.admin', {
             url: "/admin",
@@ -99,13 +111,12 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
                 }
             }
         })
-
-
         .state('app.profile', {
-            url: "/profile",
+            url: "/profile/:email",
             views: {
                 'menuContent': {
-                    templateUrl: "templates/profile.html"
+                    templateUrl: "templates/profile.html",
+                     controller: 'ProfileCtrl'
                 }
             }
         });

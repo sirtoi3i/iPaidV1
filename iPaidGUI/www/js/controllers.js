@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-    .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
+    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state) {
         // Form data for the login modal
         $scope.loginData = {};
 
@@ -19,6 +19,10 @@ angular.module('starter.controllers', [])
         $scope.login = function () {
             $scope.modal.show();
         };
+    
+        $scope.logout = function() {
+             $state.go('login');
+        }
 
 
         // Perform the login action when the user submits the login form
@@ -32,16 +36,71 @@ angular.module('starter.controllers', [])
             }, 1000);
         };
     })
+
+    .controller('LoginCtrl', function ($scope, $ionicHistory, $state, pouchProfileWrapper) {
+        $scope.profile = {email:"mklein@web.de",password:"password"};
+        $scope.login = function () {
+            pouchProfileWrapper.get($scope.profile.email).then(
+            function onSuccess(doc) {
+                var tempPassword = $scope.profile.password;
+                if(doc.password == tempPassword) {
+                         console.log('gleich');
+                          $scope.profile = doc;
+                          $state.go('app.lists');
+                     }
+            },
+            function onError(err) {
+                 alert("Email or Password wrong!");
+            });
+
+            
+        };
+    
+        $scope.register = function () {
+            console.log('register');
+            $state.go('register');
+        };
+    })
+
+    .controller('RegisterCtrl', function ($scope, $ionicHistory, $state, pouchProfileWrapper) {
+        $scope.profile = {};
+        $scope.cancel = function () {
+             $state.go('login');
+        };
+    
+        $scope.register = function () {
+            console.log($scope.profile);
+            pouchProfileWrapper.add($scope.profile).then(function (res) {
+                console.log(res);
+            }, function (reason) {
+                console.log(reason);
+            });
+           
+            $state.go('login');
+        };
+    })
+
+    .controller('ProfileCtrl', function ($scope, $stateParams, $ionicHistory, $state, pouchProfileWrapper ) {
+       pouchProfileWrapper.get($stateParams.email).then(
+            function onSuccess(doc) {
+                $scope.profile = doc;
+            },
+            function onError(err) {
+                $scope.profile = null;
+            });
+    })
+
+
     .controller('MyCtrl', function ($scope, $ionicHistory) {
         $scope.myGoBack = function () {
             $ionicHistory.goBack();
         };
     })
 
-    .controller('AdminCtrl', function ($scope, pouchWrapper) {
+    .controller('AdminCtrl', function ($scope, pouchListWrapper) {
 
         $scope.delDBs = function () {
-            pouchWrapper.removeAll();
+            pouchListWrapper.removeAll();
 
         };
 
@@ -63,6 +122,7 @@ angular.module('starter.controllers', [])
         $scope.purchases = [];
 
         $scope.$on('newPurch', function (event, purch) {
+            console.log('new purchase');
             $scope.purchases.push(purch);
 
         });
@@ -88,12 +148,12 @@ angular.module('starter.controllers', [])
         $scope.savePurchase = function () {
 
             pouchPurchWrapper.add($scope.purch, $stateParams.listId).then(function (res) {
+                console.log('add new purchase');
                 console.log(res);
             }, function (reason) {
                 console.log(reason);
             });
-            $ionicHistory.goBack();
-            $scope.modal.show();
+            $scope.modal.hide();
         };
 
 
