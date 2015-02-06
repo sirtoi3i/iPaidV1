@@ -7,6 +7,7 @@
         </a>
     </ion-nav-buttons>
     <ion-content>
+
         <div class="card">
             <div class="item item-text-wrap">
                 My Total Balance:  <div style="float:right;" class="{{list.balanceClass}}">    {{list.balance}} €</div>
@@ -25,7 +26,9 @@
             </ion-item>
         </ion-list>
         <ion-list>
-            <ion-item class="item-avatar  item-icon-right" ng-repeat="purchase in list.purchases" type="item-text-wrap" href="#/app/purchases/{{purchase.id}}">
+
+            <ion-item class="item-avatar  item-icon-right" ng-repeat="purchase in purchases" type="item-text-wrap"
+                      href="#/app/purchases/{{purchase.id}}">
                 <img ng-src="{{purchase.face}}">
                 <h2>{{purchase.title}}</h2>
 

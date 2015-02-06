@@ -1,29 +1,31 @@
 angular.module('starter.services', [])
 
     .factory('pouchDB', function () {
-        var localDB = new PouchDB("todos");
-        var remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/todos");
+
+        var localDB = new PouchDB("db4", {adapter: 'websql'});
+        var remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/db4");
         localDB.sync(remoteDB, {live: true});
-
-
-        this.destroyDBs = function () {
-            localDB.destroy(function (err, info) {
-            });
-            remoteDB.destroy(function (err, info) {
-            });
-            return null;
-        };
+        PouchDB.debug.disable();
+        //  PouchDB.debug.enable('*');
+        //
+        //this.destroyDBs = function () {
+        //    localDB.destroy(function (err, info) {
+        //    });
+        //    remoteDB.destroy(function (err, info) {
+        //    });
+        //    return null;
+        //};
 
         return localDB;
 
 
     })
 
- .
+    .
     factory('pouchProfileWrapper', function ($q, $rootScope, pouchDB) {
 
         return {
-            
+
             add: function (profile) {
                 var tempProfileObj = {
                     _id: profile.email,
@@ -114,7 +116,6 @@ angular.module('starter.services', [])
                 };
 
                 var deferred = $q.defer();
-                console.log(JSON.stringify(tempPurchObj));
                 pouchDB.post(tempPurchObj, function (err, res) {
                     $rootScope.$apply(function () {
                         if (err) {
@@ -126,13 +127,12 @@ angular.module('starter.services', [])
                 });
                 return deferred.promise;
             },
-            all: function () {
-                console.log("SCHEINT MAN NIEEEE ZU BRAUCHEN DA IMMER NEW AUFGERUFEN WIRD!?");
+            all: function (l_id) {
                 var lists = [];
                 pouchDB.allDocs({include_docs: true}, function (err, response) {
-
                     angular.forEach(response.rows, function (value, key) {
-                        lists.push(value.doc);
+                        if (value.doc.type == "purchase" && value.doc.list_id == l_id)
+                            lists.push(value.doc);
                     }, console.debug(""));
 
                 });
@@ -176,22 +176,21 @@ angular.module('starter.services', [])
 
 
     .
-    factory('pouchListWrapper', function ($q, $rootScope, pouchDB) {
+    factory('pouchListWrapper', function ($q, $rootScope, pouchDB, pouchPurchWrapper) {
 
         return {
-            add: function (t, d, b, i) {
+            add: function (list) {
                 var tempListObj = {
                     _id: new Date().toJSON(),
                     type: 'list',
-                    title: t,
-                    date: d,
-                    balance: b,
-                    icon: i
+                    title: list.title,
+                    date: list.date,
+                    balance: list.balance,
+                    icon: list.icon
                 };
-
+                console.log(JSON.stringify(tempListObj));
                 var deferred = $q.defer();
-
-                pouchDB.post(tempListObj, function (err, res) {
+                pouchDB.put(tempListObj, function (err, res) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err)
@@ -203,12 +202,14 @@ angular.module('starter.services', [])
                 return deferred.promise;
             },
             all: function () {
-                console.log("SCHEINT MAN NIEEEE ZU BRAUCHEN DA IMMER NEW AUFGERUFEN WIRD!?");
+
+
                 var lists = [];
                 pouchDB.allDocs({include_docs: true}, function (err, response) {
-
                     angular.forEach(response.rows, function (value, key) {
-                        lists.push(value.doc);
+                        if (value.doc.type == "list") {
+                            lists.push(calculateListView(value.doc, pouchPurchWrapper));
+                        }
                     }, console.debug(""));
 
                 });
@@ -258,6 +259,7 @@ angular.module('starter.services', [])
 
     .factory('pouchListener', function ($rootScope, pouchDB) {
 
+
         pouchDB.changes({
             continuous: true,
             onChange: function (change) {
@@ -266,8 +268,19 @@ angular.module('starter.services', [])
                         pouchDB.get(change.id, function (err, doc) {
                             $rootScope.$apply(function () {
                                 if (err) console.log(err);
-                                $rootScope.$broadcast('newList', doc);
-                                $rootScope.$broadcast('newPurch', doc);
+                                console.log("broadcast -new-: " + doc.type);
+                                switch (doc.type) {
+                                    case "list":
+                                        $rootScope.$broadcast('newList', doc);
+                                        break;
+                                    case "purchase":
+                                        $rootScope.$broadcast('newPurch', doc);
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+
                             })
                         });
                     })
