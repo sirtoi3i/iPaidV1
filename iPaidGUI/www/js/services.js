@@ -2,11 +2,11 @@ angular.module('starter.services', [])
 
     .factory('pouchDB', function () {
 
-        var localDB = new PouchDB("db4", {adapter: 'websql'});
+        var localDB = new PouchDB("db4", {adapter: 'idb'});
         var remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/db4");
         localDB.sync(remoteDB, {live: true});
         PouchDB.debug.disable();
-        //  PouchDB.debug.enable('*');
+        // PouchDB.debug.enable('*');
         //
         //this.destroyDBs = function () {
         //    localDB.destroy(function (err, info) {
@@ -20,6 +20,7 @@ angular.module('starter.services', [])
 
 
     })
+
 
     .
     factory('pouchProfileWrapper', function ($q, $rootScope, pouchDB) {
@@ -100,23 +101,48 @@ angular.module('starter.services', [])
 
 
     .
-    factory('pouchPurchWrapper', function ($q, $rootScope, pouchDB) {
+    factory('pouchPurchaseWrapper', function ($q, $rootScope, pouchDB) {
 
         return {
 
-            add: function (purch, listID) {
-                var tempPurchObj = {
+            add: function (purchase, listID) {
+                console.log(purchase);
+                var tempPurchaseObj = {
                     _id: new Date().toJSON(),
                     list_id: listID,
                     type: 'purchase',
-                    title: purch.title,
-                    date: purch.date,
-                    amount: purch.amount,
+                    title: purchase.title,
+                    date: purchase.date,
+                    amount: purchase.amount,
                     face: "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png"
                 };
 
                 var deferred = $q.defer();
-                pouchDB.post(tempPurchObj, function (err, res) {
+                pouchDB.post(tempPurchaseObj, function (err, res) {
+                    $rootScope.$apply(function () {
+                        if (err) {
+                            deferred.reject(err)
+                        } else {
+                            deferred.resolve(res)
+                        }
+                    });
+                });
+                return deferred.promise;
+            },
+            update: function (purchase) {
+                var tempPurchaseObj = {
+                    _id: purchase._id,
+                    _rev: purchase._rev,
+                    list_id: purchase.list_id,
+                    type: 'purchase',
+                    title: purchase.title,
+                    date: purchase.date,
+                    amount: purchase.amount,
+                    face: "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png"
+                };
+                console.log("update purchase: " + purchase);
+                var deferred = $q.defer();
+                pouchDB.post(tempPurchaseObj, function (err, res) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err)
@@ -138,9 +164,9 @@ angular.module('starter.services', [])
                 });
                 return lists;
             },
-            get: function (listId) {
-                console.log('get list');
-                return pouchDB.get(listId, function (err, doc) {
+            get: function (purchaseId) {
+                console.log('get purchase');
+                return pouchDB.get(purchaseId, function (err, doc) {
                 });
 
             },
@@ -262,30 +288,26 @@ angular.module('starter.services', [])
 
         pouchDB.changes({
             continuous: true,
+            include_docs: true,
             onChange: function (change) {
+                console.log("Change: " + JSON.stringify(change));
                 if (!change.deleted) {
                     $rootScope.$apply(function () {
-                        pouchDB.get(change.id, function (err, doc) {
-                            $rootScope.$apply(function () {
-                                if (err) console.log(err);
-                                console.log("broadcast -new-: " + doc.type);
-                                switch (doc.type) {
-                                    case "list":
-                                        $rootScope.$broadcast('newList', doc);
-                                        break;
-                                    case "purchase":
-                                        $rootScope.$broadcast('newPurch', doc);
-                                        break;
-                                    default:
-                                        break;
-                                }
-
-
-                            })
-                        });
+                        console.log("broadcast -new-: " + change.doc.type);
+                        switch (change.doc.type) {
+                            case "list":
+                                $rootScope.$broadcast('newList', change.doc);
+                                break;
+                            case "purchase":
+                                $rootScope.$broadcast('newPurch', change.doc);
+                                break;
+                            default:
+                                break;
+                        }
                     })
                 } else {
                     $rootScope.$apply(function () {
+                        console.log("delete something" + JSON.stringify(change));
                         $rootScope.$broadcast('delList', change.id);
                     });
                 }

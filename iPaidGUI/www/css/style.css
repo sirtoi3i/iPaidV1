@@ -42,6 +42,26 @@
     margin-right: auto;
 }
 
+
+.profilePicDefaultSmall {
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    font-size: 300%;
+    background-color: rgba(220,220,220, 0.7);
+    display: block;
+    margin-bottom: 20px;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
+.profilePicDefaultSmall i {
+    position: relative;
+    top: 5px;
+}
+
 .profilePicDefault i {
     position: relative;
     top: 15px;
