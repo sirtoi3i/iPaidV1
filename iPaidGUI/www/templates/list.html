@@ -2,17 +2,21 @@
 
 
     <div class="tabs tabs-top tabs-icon-top">
-        <a class="tab-item">
+        <a class="tab-item" id="tab0" ng-class="{'tab-item-active': false}">
             <i class="icon ion-ios7-cart" ng-click="template=templates[0]"></i>
             Purchases
         </a>
-        <a class="tab-item">
+        <a class="tab-item" ng-class="{'tab-item-active': isTabActive()}">
             <i class="icon ion-ios7-people" ng-click="template=templates[1]"></i>
             Member
         </a>
-        <a class="tab-item">
+        <a class="tab-item" ng-class="{'tab-item-active': true}">
             <i class="icon ion-arrow-graph-up-right" ng-click="template=templates[2]"></i>
             Statistics
+        </a>
+        <a class="tab-item" ng-class="{'tab-item-active': isTabActive()}">
+            <i class="icon ion-gear-a" ng-click="template=templates[3]"></i>
+            Settings
         </a>
     </div>
 
@@ -29,12 +33,7 @@
     </ion-content>
 
 
-    <!--
 
 
-        <ion-nav-view name="list_purchases"></ion-nav-view>
-        <ion-nav-view name="list_statistics"></ion-nav-view>
-        <ion-nav-view name="list_member"></ion-nav-view>
-    -->
 
 </ion-view>

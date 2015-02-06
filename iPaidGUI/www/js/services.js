@@ -2,7 +2,8 @@ angular.module('starter.services', [])
 
     .factory('pouchDB', function () {
 
-        var localDB = new PouchDB("db4", {adapter: 'idb'});
+        //var localDB = new PouchDB("db4", {adapter: 'idb'});
+        var localDB = new PouchDB("db4", {adapter: 'websql'});
         var remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/db4");
         localDB.sync(remoteDB, {live: true});
         PouchDB.debug.disable();

@@ -8,3 +8,9 @@ function calculateListView(listEntry, pouchPurchWrapper) {
     return listEntry;
 };
 
+
+function isTabActiv() {
+
+    return true;
+};
+

@@ -1,41 +1,40 @@
-angular.module('starter.controllers', [])
-    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state) {
-        // Form data for the login modal
-        $scope.loginData = {};
+angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state) {
+    // Form data for the login modal
+    $scope.loginData = {};
 
-        // Create the login modal that we will use later
-        $ionicModal.fromTemplateUrl('templates/login.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.modal = modal;
-        });
+    // Create the login modal that we will use later
+    $ionicModal.fromTemplateUrl('templates/login.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.modal = modal;
+    });
 
-        // Triggered in the login modal to close it
-        $scope.closeLogin = function () {
-            $scope.modal.hide();
-        };
+    // Triggered in the login modal to close it
+    $scope.closeLogin = function () {
+        $scope.modal.hide();
+    };
 
-        // Open the login modal
-        $scope.login = function () {
-            $scope.modal.show();
-        };
+    // Open the login modal
+    $scope.login = function () {
+        $scope.modal.show();
+    };
 
-        $scope.logout = function () {
-            $state.go('login');
-        }
+    $scope.logout = function () {
+        $state.go('login');
+    }
 
 
-        // Perform the login action when the user submits the login form
-        $scope.doLogin = function () {
-            console.log('Doing login', $scope.loginData);
+    // Perform the login action when the user submits the login form
+    $scope.doLogin = function () {
+        console.log('Doing login', $scope.loginData);
 
-            // Simulate a login delay. Remove this and replace with your login
-            // code if using a login system
-            $timeout(function () {
-                $scope.closeLogin();
-            }, 1000);
-        };
-    })
+        // Simulate a login delay. Remove this and replace with your login
+        // code if using a login system
+        $timeout(function () {
+            $scope.closeLogin();
+        }, 1000);
+    };
+})
 
     .controller('LoginCtrl', function ($scope, $ionicHistory, $state, pouchProfileWrapper) {
         $scope.profile = {email: "mklein@web.de", password: "password"};
@@ -108,7 +107,7 @@ angular.module('starter.controllers', [])
     })
 
 
-    .controller('ListDetailCtrl', function ($scope, $stateParams, pouchListener, pouchPurchaseWrapper, pouchListWrapper, $ionicModal, $ionicHistory) {
+    .controller('ListDetailCtrl', function ($scope, $stateParams, pouchListener, pouchPurchaseWrapper, pouchListWrapper, $ionicModal) {
 
         $scope.templates = ['templates/list_purchases.html', 'templates/list_member.html', 'templates/list_statistics.html'];
 
@@ -154,7 +153,7 @@ angular.module('starter.controllers', [])
         };
 
         $scope.savePurchase = function () {
-            console.log("Date: " +  $scope.purchase.date + " for purchase: " + $scope.purchase.title);
+            console.log("Date: " + $scope.purchase.date + " for purchase: " + $scope.purchase.title);
             pouchPurchaseWrapper.add($scope.purchase, $stateParams.listId).then(function (res) {
                 console.log(res);
             }, function (reason) {
@@ -170,6 +169,25 @@ angular.module('starter.controllers', [])
                 }
             }
         });
+
+
+        //Chart
+        $scope.chart = {};
+        $scope.chart.type = 'Bar';
+        $scope.chart.series = ["Tobi", "Michel", "Daniel"];
+        $scope.chart.labels = [''];
+        $scope.chart.data = [[-65], [80], [28]];
+        $scope.chart.legend = true;
+        $scope.chart.options = {
+
+            scaleOverride: true,
+            // Number - The number of steps in a hard coded scale
+            scaleSteps: 8,
+            // Number - The value jump in the hard coded scale
+            scaleStepWidth: 25,
+            // Number - The scale starting value
+            scaleStartValue: -100
+        };
 
 
     })
@@ -209,7 +227,7 @@ angular.module('starter.controllers', [])
             $ionicHistory.goBack();
         };
 
-        $scope.deletePurchase = function(purchase) {
+        $scope.deletePurchase = function (purchase) {
             pouchPurchaseWrapper.remove(purchase._id).then(function (res) {
                 console.log(res);
             }, function (reason) {
@@ -219,113 +237,129 @@ angular.module('starter.controllers', [])
         }
 
         $scope.$on('newPurch', function (event, p) {
-            if($scope.purchase._id==p._id) {
+            if ($scope.purchase._id == p._id) {
                 console.log("Selected Purchase updated");
                 $scope.purchase = p;
             }
         });
 
-        $scope.amountCalc = {buttonCap:'Everybody', part1Count : 0, part1Amount: 0, part2Count : 0, part2Amount: 0, part3Count : 0, part3Amount: 0, part4Count : 0, part4Amount: 0 };
+        $scope.amountCalc = {
+            buttonCap: 'Everybody',
+            part1Count: 0,
+            part1Amount: 0,
+            part2Count: 0,
+            part2Amount: 0,
+            part3Count: 0,
+            part3Amount: 0,
+            part4Count: 0,
+            part4Amount: 0
+        };
         $scope.everybody = function (amount, participants) {
             console.log("Amount: " + amount + ", Participants: " + participants);
-            if( $scope.amountCalc.buttonCap == 'Everybody') {
+            if ($scope.amountCalc.buttonCap == 'Everybody') {
                 $scope.amountCalc.buttonCap = 'Nobody';
                 $scope.amountCalc.part1Count = 1;
                 $scope.amountCalc.part2Count = 1;
                 $scope.amountCalc.part3Count = 1;
                 $scope.amountCalc.part4Count = 1;
-                $scope.amountCalc.part1Amount = round(amount/participants);
-                $scope.amountCalc.part2Amount = round(amount/participants);
-                $scope.amountCalc.part3Amount = round(amount/participants);
-                $scope.amountCalc.part4Amount = round(amount/participants);
+                $scope.amountCalc.part1Amount = round(amount / participants);
+                $scope.amountCalc.part2Amount = round(amount / participants);
+                $scope.amountCalc.part3Amount = round(amount / participants);
+                $scope.amountCalc.part4Amount = round(amount / participants);
             } else {
                 $scope.amountCalc.buttonCap = 'Everybody';
                 $scope.amountCalc.part1Count = 0;
                 $scope.amountCalc.part2Count = 0;
                 $scope.amountCalc.part3Count = 0;
                 $scope.amountCalc.part4Count = 0;
-                $scope.amountCalc.part1Amount = 00,00;
-                $scope.amountCalc.part2Amount = 00,00;
-                $scope.amountCalc.part3Amount = 00,00;
-                $scope.amountCalc.part4Amount = 00,00;
+                $scope.amountCalc.part1Amount = 00, 00;
+                $scope.amountCalc.part2Amount = 00, 00;
+                $scope.amountCalc.part3Amount = 00, 00;
+                $scope.amountCalc.part4Amount = 00, 00;
             }
-            function round(x) { Ergebnis = Math.round(x * 100) / 100 ; return Ergebnis; }
+            function round(x) {
+                Ergebnis = Math.round(x * 100) / 100;
+                return Ergebnis;
+            }
         }
 
         $scope.incrementParticipant = function (amount, participant) {
             $scope.amountCalc.buttonCap = 'Nobody';
             var count = $scope.amountCalc.part1Count + $scope.amountCalc.part2Count + $scope.amountCalc.part3Count + $scope.amountCalc.part4Count;
-            if(participant == 1) {
+            if (participant == 1) {
                 $scope.amountCalc.part1Count++;
-            } else  if(participant == 2) {
+            } else if (participant == 2) {
                 $scope.amountCalc.part2Count++;
-            }else  if(participant == 3) {
+            } else if (participant == 3) {
                 $scope.amountCalc.part3Count++;
-            }else  if(participant == 4) {
+            } else if (participant == 4) {
                 $scope.amountCalc.part4Count++;
             }
             count++;
-            $scope.amountCalc.part1Amount = round((amount/count)*$scope.amountCalc.part1Count);
-            $scope.amountCalc.part2Amount = round((amount/count)*$scope.amountCalc.part2Count);
-            $scope.amountCalc.part3Amount = round((amount/count)*$scope.amountCalc.part3Count);
-            $scope.amountCalc.part4Amount = round((amount/count)*$scope.amountCalc.part4Count);
+            $scope.amountCalc.part1Amount = round((amount / count) * $scope.amountCalc.part1Count);
+            $scope.amountCalc.part2Amount = round((amount / count) * $scope.amountCalc.part2Count);
+            $scope.amountCalc.part3Amount = round((amount / count) * $scope.amountCalc.part3Count);
+            $scope.amountCalc.part4Amount = round((amount / count) * $scope.amountCalc.part4Count);
 
-            function round(x) { Ergebnis = Math.round(x * 100) / 100 ; return Ergebnis; }
+            function round(x) {
+                Ergebnis = Math.round(x * 100) / 100;
+                return Ergebnis;
+            }
 
         }
     })
 
-   /* .controller('amountCalcCtrl', function ($scope) {
-        $scope.amountCalc = {buttonCap:'Everybody', part1Count : 0, part1Amount: 0, part2Count : 0, part2Amount: 0, part3Count : 0, part3Amount: 0, part4Count : 0, part4Amount: 0 };
-        $scope.everybody = function (amount, participants) {
-            console.log("Amount: " + amount + ", Participants: " + participants);
-            if( $scope.amountCalc.buttonCap == 'Everybody') {
-                $scope.amountCalc.buttonCap = 'Nobody';
-                $scope.amountCalc.part1Count = 1;
-                $scope.amountCalc.part2Count = 1;
-                $scope.amountCalc.part3Count = 1;
-                $scope.amountCalc.part4Count = 1;
-                $scope.amountCalc.part1Amount = round(amount/participants);
-                $scope.amountCalc.part2Amount = round(amount/participants);
-                $scope.amountCalc.part3Amount = round(amount/participants);
-                $scope.amountCalc.part4Amount = round(amount/participants);
-            } else {
-                $scope.amountCalc.buttonCap = 'Everybody';
-                $scope.amountCalc.part1Count = 0;
-                $scope.amountCalc.part2Count = 0;
-                $scope.amountCalc.part3Count = 0;
-                $scope.amountCalc.part4Count = 0;
-                $scope.amountCalc.part1Amount = 00,00;
-                $scope.amountCalc.part2Amount = 00,00;
-                $scope.amountCalc.part3Amount = 00,00;
-                $scope.amountCalc.part4Amount = 00,00;
-            }
-            function round(x) { Ergebnis = Math.round(x * 100) / 100 ; return Ergebnis; }
-        }
+    /* .controller('amountCalcCtrl', function ($scope) {
+     $scope.amountCalc = {buttonCap:'Everybody', part1Count : 0, part1Amount: 0, part2Count : 0, part2Amount: 0, part3Count : 0, part3Amount: 0, part4Count : 0, part4Amount: 0 };
+     $scope.everybody = function (amount, participants) {
+     console.log("Amount: " + amount + ", Participants: " + participants);
+     if( $scope.amountCalc.buttonCap == 'Everybody') {
+     $scope.amountCalc.buttonCap = 'Nobody';
+     $scope.amountCalc.part1Count = 1;
+     $scope.amountCalc.part2Count = 1;
+     $scope.amountCalc.part3Count = 1;
+     $scope.amountCalc.part4Count = 1;
+     $scope.amountCalc.part1Amount = round(amount/participants);
+     $scope.amountCalc.part2Amount = round(amount/participants);
+     $scope.amountCalc.part3Amount = round(amount/participants);
+     $scope.amountCalc.part4Amount = round(amount/participants);
+     } else {
+     $scope.amountCalc.buttonCap = 'Everybody';
+     $scope.amountCalc.part1Count = 0;
+     $scope.amountCalc.part2Count = 0;
+     $scope.amountCalc.part3Count = 0;
+     $scope.amountCalc.part4Count = 0;
+     $scope.amountCalc.part1Amount = 00,00;
+     $scope.amountCalc.part2Amount = 00,00;
+     $scope.amountCalc.part3Amount = 00,00;
+     $scope.amountCalc.part4Amount = 00,00;
+     }
+     function round(x) { Ergebnis = Math.round(x * 100) / 100 ; return Ergebnis; }
+     }
 
-        $scope.incrementParticipant = function (amount, participant) {
-            $scope.amountCalc.buttonCap = 'Nobody';
-            var count = $scope.amountCalc.part1Count + $scope.amountCalc.part2Count + $scope.amountCalc.part3Count + $scope.amountCalc.part4Count;
-            if(participant == 1) {
-                $scope.amountCalc.part1Count++;
-            } else  if(participant == 2) {
-                $scope.amountCalc.part2Count++;
-            }else  if(participant == 3) {
-                $scope.amountCalc.part3Count++;
-            }else  if(participant == 4) {
-                $scope.amountCalc.part4Count++;
-            }
-            count++;
-            $scope.amountCalc.part1Amount = round((amount/count)*$scope.amountCalc.part1Count);
-            $scope.amountCalc.part2Amount = round((amount/count)*$scope.amountCalc.part2Count);
-            $scope.amountCalc.part3Amount = round((amount/count)*$scope.amountCalc.part3Count);
-            $scope.amountCalc.part4Amount = round((amount/count)*$scope.amountCalc.part4Count);
+     $scope.incrementParticipant = function (amount, participant) {
+     $scope.amountCalc.buttonCap = 'Nobody';
+     var count = $scope.amountCalc.part1Count + $scope.amountCalc.part2Count + $scope.amountCalc.part3Count + $scope.amountCalc.part4Count;
+     if(participant == 1) {
+     $scope.amountCalc.part1Count++;
+     } else  if(participant == 2) {
+     $scope.amountCalc.part2Count++;
+     }else  if(participant == 3) {
+     $scope.amountCalc.part3Count++;
+     }else  if(participant == 4) {
+     $scope.amountCalc.part4Count++;
+     }
+     count++;
+     $scope.amountCalc.part1Amount = round((amount/count)*$scope.amountCalc.part1Count);
+     $scope.amountCalc.part2Amount = round((amount/count)*$scope.amountCalc.part2Count);
+     $scope.amountCalc.part3Amount = round((amount/count)*$scope.amountCalc.part3Count);
+     $scope.amountCalc.part4Amount = round((amount/count)*$scope.amountCalc.part4Count);
 
-            function round(x) { Ergebnis = Math.round(x * 100) / 100 ; return Ergebnis; }
+     function round(x) { Ergebnis = Math.round(x * 100) / 100 ; return Ergebnis; }
 
-        }
+     }
 
-    })*/
+     })*/
 
     .controller('ListsCtrl', function ($scope, pouchListener, pouchListWrapper) {
 
@@ -340,8 +374,6 @@ angular.module('starter.controllers', [])
 
         $scope.lists = [];
         $scope.lists = pouchListWrapper.all();
-
-
 
 
         $scope.$on('newList', function (event, l) {
