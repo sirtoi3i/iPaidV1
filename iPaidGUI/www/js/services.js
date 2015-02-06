@@ -176,7 +176,7 @@ angular.module('starter.services', [])
 
 
     .
-    factory('pouchListWrapper', function ($q, $rootScope, pouchDB, pouchPurchWrapper) {
+    factory('pouchListWrapper', function ($q, $rootScope, pouchDB) {
 
         return {
             add: function (list) {
@@ -208,7 +208,7 @@ angular.module('starter.services', [])
                 pouchDB.allDocs({include_docs: true}, function (err, response) {
                     angular.forEach(response.rows, function (value, key) {
                         if (value.doc.type == "list") {
-                            lists.push(calculateListView(value.doc, pouchPurchWrapper));
+                            lists.push(calculateListView(value.doc));
                         }
                     }, console.debug(""));
 

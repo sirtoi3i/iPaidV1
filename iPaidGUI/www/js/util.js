@@ -3,17 +3,8 @@
  */
 
 function calculateListView(listEntry, pouchPurchWrapper) {
-    listEntry.balance = 0;
-    listEntry.date = 0;
-    console.log(JSON.stringify(listEntry));
-    pouchPurchWrapper.all(listEntry._id).forEach(function (entry) {
-        listEntry.balance = listEntry.balance + entry.amount;
-        console.log("asd");
-        if (entry.date > listEntry.date)
-            listEntry.date = entry.date;
-
-    });
-    console.log(JSON.stringify(listEntry));
+    listEntry.balance = "123.23";
+    listEntry.date = "27.09.2015";
     return listEntry;
 };
 
