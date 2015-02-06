@@ -110,6 +110,10 @@ angular.module('starter.controllers', [])
 
     .controller('ListDetailCtrl', function ($scope, $stateParams, pouchListener, pouchPurchWrapper, pouchListWrapper, $ionicModal, $ionicHistory) {
 
+        $scope.templates = ['templates/list_purchases.html', 'templates/list_member.html', 'templates/list_statistics.html'];
+
+        $scope.template = $scope.templates[0];
+
 
         pouchListWrapper.get($stateParams.listId).then(
             function onSuccess(doc) {

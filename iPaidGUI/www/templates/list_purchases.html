@@ -1,0 +1,12 @@
+<ion-list>
+    <ion-item class="item-avatar  item-icon-right" ng-repeat="purchase in purchases" type="item-text-wrap"
+              href="#/app/purchases/{{purchase.id}}">
+        <img ng-src="{{purchase.face}}">
+
+        <h2>{{purchase.title}}</h2>
+
+        <div style="float:left;" class="list_date">{{purchase.date}}</div>
+        <div style="float:right;"> {{purchase.amount}} €</div>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+    </ion-item>
+</ion-list>

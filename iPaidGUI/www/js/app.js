@@ -30,17 +30,17 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "templates/menu.html",
             controller: 'AppCtrl'
         })
-    
-          .state('login', {
+
+        .state('login', {
             url: "/app/login",
-                    templateUrl: "templates/login.html",
-                    controller: 'LoginCtrl'  
+            templateUrl: "templates/login.html",
+            controller: 'LoginCtrl'
         })
-    
+
         .state('register', {
             url: "/register",
             templateUrl: "templates/register.html",
-                    controller: 'RegisterCtrl'  
+            controller: 'RegisterCtrl'
         })
 
         .state('app.admin', {
@@ -74,6 +74,7 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
+
         .state('app.list', {
             url: "/lists/:listId",
             views: {
@@ -83,6 +84,41 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
                 }
             }
         })
+
+        /*
+
+         .state('app.list.sub', {
+         url: "/sub",
+         views: {
+         'list_purchases': {
+         templateUrl: "templates/list_purchases.html"
+         },
+         'list_member': {
+         templateUrl: "templates/list_member.html"
+         },
+         'list_statistics': {
+         templateUrl: "templates/list_statistics.html"
+         }
+         }
+         })
+
+         .state('app.list.member', {
+         url: "/member",
+         views: {
+         'listContent': {
+         templateUrl: "templates/list_member.html"
+         }
+         }
+         })
+
+         .state('app.list.statistics', {
+         url: "/statistics",
+         views: {
+         'listContent': {
+         templateUrl: "templates/list_statistics.html"
+         }
+         }
+         })*/
 
         .state('app.newPurchase', {
             url: "/newPurchase",
@@ -116,7 +152,7 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
             views: {
                 'menuContent': {
                     templateUrl: "templates/profile.html",
-                     controller: 'ProfileCtrl'
+                    controller: 'ProfileCtrl'
                 }
             }
         });
