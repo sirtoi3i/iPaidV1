@@ -8,46 +8,46 @@
     </ion-nav-buttons>
 
     <ion-content>
-        <div class="list">
+        <div class="list"  >
             <a class="item item-divider"></a>
-            <a class="item item-input item-icon-right" href="#/app/purchaseTitle">
+            <a class="item item-input item-icon-right" href="#/app/purchaseTitle/{{purchase._id}}">
                 <span class="input-label">Title</span>
-                <span >Groceries</span>
+                <span>{{purchase.title}}</span>
                 <i class="icon ion-chevron-right icon-accessory"></i>
             </a>
             <label class="item item-input">
                 <span class="input-label">Date</span>
-                <input type="date" value="2011-09-29">
+                <input type="date" ng-model="purchase.date">
             </label>
             <label class="item item-input">
                 <span class="input-label">Amount</span>
-                <input type="number" value="50.00">
+                <input type="number" ng-model="purchase.amount">
             </label>
 
             <a class="item item-divider"></a>
-            <a style="text-align:center; color: rgb(56,126, 245);" class="item">Nobody</a>
-            <a class="item item-avatar" href="#">
+            <a style="text-align:center; color: rgb(56,126, 245);" class="item" ng-click="everybody(purchase.amount, 4)">{{amountCalc.buttonCap}}</a>
+            <a class="item item-avatar" ng-click="incrementParticipant(purchase.amount, 1)">
                 <img src="https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png">
                 <h2>Ben Sparrow</h2>
-                <p style="float:left;">2x</p><p style="float:right;">20,00 €</p>
+                <p style="float:left;">{{amountCalc.part1Count}}x</p><p style="float:right;">{{amountCalc.part1Amount}} €</p>
             </a>
-            <a class="item item-avatar" href="#">
+            <a class="item item-avatar" ng-click="incrementParticipant(purchase.amount, 2)">
                 <img src="https://avatars3.githubusercontent.com/u/11214?v=3&s=460">
                 <h2>Max Lynx</h2>
-                <p style="float:left;">1x</p><p style="float:right;">10,00 €</p>
+                <p style="float:left;">{{amountCalc.part2Count}}x</p><p style="float:right;">{{amountCalc.part2Amount}} €</p>
             </a>
-            <a class="item item-avatar" href="#">
+            <a class="item item-avatar" ng-click="incrementParticipant(purchase.amount, 3)">
                 <img src="https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg">
                 <h2>Andrew Jostlen</h2>
-                <p style="float:left;">1x</p><p style="float:right;">10,00 €</p>
+                <p style="float:left;">{{amountCalc.part3Count}}x</p><p style="float:right;">{{amountCalc.part3Amount}} €</p>
             </a>
-            <a class="item item-avatar" href="#">
+            <a class="item item-avatar" ng-click="incrementParticipant(purchase.amount, 4)">
                 <img src="https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg">
                 <h2>Adam Bradleyson</h2>
-                <p style="float:left;">1x</p><p style="float:right;">10,00 €</p>
+                <p style="float:left;">{{amountCalc.part4Count}}x</p><p style="float:right;">{{amountCalc.part4Amount}} €</p>
             </a>
             <a class="item item-divider"></a>
-            <a style="text-align:center; color: red;" class="item">Delete Purchase</a>
+            <a style="text-align:center; color: red;" class="item" ng-click="deletePurchase(purchase)">Delete Purchase</a>
             <a class="item item-divider"></a>
         </div>      
 

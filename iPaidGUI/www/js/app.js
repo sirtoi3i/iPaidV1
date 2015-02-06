@@ -130,10 +130,11 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
         })
 
         .state('app.purchaseTitle', {
-            url: "/purchaseTitle",
+            url: "/purchaseTitle/:purchaseId",
             views: {
                 'menuContent': {
-                    templateUrl: "templates/purchaseTitle.html"
+                    templateUrl: "templates/purchaseTitle.html",
+                    controller: 'PurchaseDetailCtrl'
                 }
             }
         })
@@ -155,7 +156,15 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
                     controller: 'ProfileCtrl'
                 }
             }
-        });
+        })
+            .state('app.members', {
+                url: "/members",
+                views: {
+                    'menuContent': {
+                        templateUrl: "templates/members.html"
+                    }
+                }
+            });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/lists');
 });
