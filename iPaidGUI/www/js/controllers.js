@@ -36,47 +36,71 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
     };
 })
 
-    .controller('LoginCtrl', function ($scope, $ionicHistory, $state, pouchProfileWrapper) {
-        $scope.profile = {email: "mklein@web.de", password: "password"};
+    .controller('LoginCtrl', function ($scope, $ionicHistory, $state, pouchProfileWrapper, $ionicPopup) {
+
+
+        $scope.profile = {};
+
         $scope.login = function () {
-            pouchProfileWrapper.get($scope.profile.email).then(
-                function onSuccess(doc) {
-                    var tempPassword = $scope.profile.password;
-                    if (doc.password == tempPassword) {
-                        console.log('gleich');
-                        $scope.profile = doc;
-                        $state.go('app.lists');
-                    }
+
+
+            pouchProfileWrapper.login($scope.profile).then(
+                function onSuccess(ele) {
+                    console.log(ele);
+                    $state.go('app.lists');
                 },
                 function onError(err) {
-                    alert("Email or Password wrong!");
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Login',
+                        template: err.message
+                    });
+                    alertPopup.then(function (res) {
+
+                    });
+                    console.log(err);
                 });
 
 
         };
 
-        $scope.register = function () {
+        $scope.switch_register = function () {
             console.log('register');
             $state.go('register');
         };
-    })
 
-    .controller('RegisterCtrl', function ($scope, $ionicHistory, $state, pouchProfileWrapper) {
-        $scope.profile = {};
+
         $scope.cancel = function () {
             $state.go('login');
         };
 
         $scope.register = function () {
-            console.log($scope.profile);
-            pouchProfileWrapper.add($scope.profile).then(function (res) {
-                console.log(res);
-            }, function (reason) {
-                console.log(reason);
-            });
 
-            $state.go('login');
+
+            pouchProfileWrapper.register($scope.profile).then(
+                function onSuccess(ele) {
+                    console.log(ele);
+                    $state.go('login');
+                },
+                function onError(err) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Login',
+                        template: err.message
+                    });
+                    alertPopup.then(function (res) {
+
+                    });
+                    console.log(err);
+                });
+
+
+
+
+
+
+
         };
+
+
     })
 
     .controller('ProfileCtrl', function ($scope, $stateParams, $ionicHistory, $state, pouchProfileWrapper) {
@@ -107,13 +131,8 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
     })
 
 
-    .controller('ListDetailCtrl', function ($scope, $stateParams, pouchListener, pouchPurchaseWrapper, pouchListWrapper, $ionicModal) {
-
-        $scope.templates = ['templates/list_purchases.html', 'templates/list_member.html', 'templates/list_statistics.html'];
-
-        $scope.template = $scope.templates[0];
-
-
+    .controller('ListDetailCtrl', function ($scope, $stateParams, pouchListener, pouchPurchaseWrapper, pouchListWrapper, $ionicModal, $ionicPopup) {
+        //Get List
         pouchListWrapper.get($stateParams.listId).then(
             function onSuccess(doc) {
                 $scope.list = doc;
@@ -122,7 +141,63 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
                 $scope.list = null;
             });
 
-        //Purchases
+        //Provide Templates
+        $scope.templates = ['templates/list_purchases.html', 'templates/list_member.html', 'templates/list_statistics.html', 'templates/list_statistics.html'];
+        $scope.template = $scope.templates[1];
+
+//Member
+        $scope.members = [{
+            "email": "tborlinghaus@gmail.com",
+            "name": "Tobi",
+            "balance": 87.34,
+            "face": "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png",
+            "_id": "2015-02-0sd6T14:37:53.926Z",
+            "_rev": "3-e674eae815e299105191dc2276aa6086"
+        }, {
+            "email": "mklein@gmail.com",
+            "name": "Michel",
+            "balance": -71.59,
+            "face": "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png",
+            "_id": "2015-02-06T09:0ads2:08.919Z",
+            "_rev": "2-bb42c549db523b7edba82f855e2f1e38"
+        }, {
+            "email": "dclasen@gmail.com",
+            "name": "Daniel",
+            "balance": -23.19,
+            "face": "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png",
+            "_id": "2015-02-06T12:19:39.as305Z",
+            "_rev": "3-c960631fac433830bd6ce43f8370032f"
+        }, {
+            "email": "mmimi@gmail.com",
+            "name": "Mimi",
+            "balance": 7.44,
+            "face": "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png",
+            "_id": "2015-02-06T14:dssad:53.926Z",
+            "_rev": "3-e674eae815e299105191dc2276aa6086"
+        }];
+        // confirm dialog
+        $scope.showConfirm = function (member) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Remove Member',
+                template: 'Are you sure you want to remove ' + member.name + ' from this list?'
+            });
+            confirmPopup.then(function (res) {
+                if (res) {
+                    console.log('Yes, I am');
+                    for (var i = 0; i < $scope.members.length; i++) {
+                        if ($scope.members[i]._id === member._id) {
+                            $scope.members.splice(i, 1);
+                        }
+                    }
+                } else {
+                    console.log('No, I am not');
+                }
+            });
+        };
+
+
+        //Member Ende
+        //Purchases Begin
         $scope.purchase = {date: new Date()};
         $scope.purchases = [];
         $scope.purchases = pouchPurchaseWrapper.all($stateParams.listId);
@@ -162,6 +237,35 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
             $scope.modal.hide();
         };
 
+
+        //Statistics Start
+        $scope.chart = {};
+        $scope.chart.type = 'Line';
+        $scope.chart.series = ["Tobi", "Michel", "Daniel"];
+        $scope.chart.labels = ["February", "March", "April", "May", "June", "July"];
+        $scope.chart.data = [[59, 80, 81, 56, 55],
+            [28, 48, 40, 19, 27], [65, -80, -81, -56, -55], [25, -39, -61, -86, -15]];
+        $scope.chart.legend = true;
+        $scope.chart.options = {
+            animationSteps: 120
+        };
+
+
+        $scope.chart.series = [];
+        $scope.chart.labels = ["February", "March", "April", "May", "June", "July"];
+
+        var i = 0;
+        $scope.members.forEach(function (entry) {
+            $scope.chart.series.push(entry.name);
+            console.log($scope.chart.data[i]);
+            $scope.chart.data[i].push(entry.balance);
+            i++;
+        });
+
+
+        //Statistics End
+
+
         $scope.$on('delList', function (event, id) {
             for (var i = 0; i < $scope.purchases.length; i++) {
                 if ($scope.purchases[i]._id === id) {
@@ -169,25 +273,6 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
                 }
             }
         });
-
-
-        //Chart
-        $scope.chart = {};
-        $scope.chart.type = 'Bar';
-        $scope.chart.series = ["Tobi", "Michel", "Daniel"];
-        $scope.chart.labels = [''];
-        $scope.chart.data = [[-65], [80], [28]];
-        $scope.chart.legend = true;
-        $scope.chart.options = {
-
-            scaleOverride: true,
-            // Number - The number of steps in a hard coded scale
-            scaleSteps: 8,
-            // Number - The value jump in the hard coded scale
-            scaleStepWidth: 25,
-            // Number - The scale starting value
-            scaleStartValue: -100
-        };
 
 
     })

@@ -1,5 +1,10 @@
 <ion-view view-title="{{list.title}}">
-
+    <ion-nav-buttons side="right">
+        <a href="#/app/newPurchase">
+            <button class="button button-icon button-clear button-positive ion-ios7-plus-empty">
+            </button>
+        </a>
+    </ion-nav-buttons>
 
     <div class="tabs tabs-top tabs-icon-top">
         <a class="tab-item" id="tab0" ng-class="{'tab-item-active': false}">
@@ -19,14 +24,6 @@
             Settings
         </a>
     </div>
-
-
-    <!--<ion-nav-buttons side="right">-->
-    <!--<a href="#/app/newList">      -->
-    <!--<button class="button button-icon button-clear button-positive ion-ios7-plus-empty">-->
-    <!--</button>-->
-    <!--</a>-->
-    <!--</ion-nav-buttons>-->
 
     <ion-content class="has-subheader">
         <div ng-include="template"></div>

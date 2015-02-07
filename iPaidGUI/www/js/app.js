@@ -40,7 +40,7 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
         .state('register', {
             url: "/register",
             templateUrl: "templates/register.html",
-            controller: 'RegisterCtrl'
+            controller: 'LoginCtrl'
         })
 
         .state('app.admin', {
@@ -166,5 +166,5 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
                 }
             });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/lists');
+    $urlRouterProvider.otherwise('/app/login');
 });

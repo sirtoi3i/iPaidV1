@@ -1,4 +1,15 @@
-</br>
+<ion-list>
+    <ion-item class="item-avatar " ng-repeat="member in members" type="item-text-wrap"
+              href="#/app/purchases">
+        <img ng-src="{{member.face}}">
+
+        <div style="line-height: 50px;">{{member.name}}
+            <div style="float:right;" ng-class="{ red: member.balance < 0 }"> {{member.balance}} €</div>
+        </div>
+
+    </ion-item>
+</ion-list>
+
 
 <canvas id="base" chart-type="chart.type" class="chart-base" data="chart.data" series="chart.series"
         legend="chart.legend" options="chart.options"

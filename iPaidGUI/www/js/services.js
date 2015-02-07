@@ -1,96 +1,85 @@
+var remoteDB = {};
+var localDB = {};
+
+var dbName = "db5"
 angular.module('starter.services', [])
 
     .factory('pouchDB', function () {
-
         //var localDB = new PouchDB("db4", {adapter: 'idb'});
-        var localDB = new PouchDB("db4", {adapter: 'websql'});
-        var remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/db4");
+        localDB = new PouchDB(dbName, {adapter: 'websql'});
         localDB.sync(remoteDB, {live: true});
-        PouchDB.debug.disable();
-        // PouchDB.debug.enable('*');
-        //
-        //this.destroyDBs = function () {
-        //    localDB.destroy(function (err, info) {
-        //    });
-        //    remoteDB.destroy(function (err, info) {
-        //    });
-        //    return null;
-        //};
-
+        //PouchDB.debug.disable();
+        PouchDB.debug.enable('*');
         return localDB;
+    })
+    .factory('couchDB', function () {
+        var pouchOpts = {
+            skipSetup: true
+        };
 
-
+        remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/" + dbName, pouchOpts);
+        return remoteDB;
     })
 
-
     .
-    factory('pouchProfileWrapper', function ($q, $rootScope, pouchDB) {
+    factory('pouchProfileWrapper', function ($q, $rootScope, couchDB) {
+
 
         return {
-
-            add: function (profile) {
-                var tempProfileObj = {
-                    _id: profile.email,
-                    type: 'profile',
-                    email: profile.email,
-                    firstName: profile.firstName,
-                    lastName: profile.lastName,
-                    password: profile.password,
-                    picture: null
-                };
+            register: function (profile) {
 
                 var deferred = $q.defer();
-                console.log(JSON.stringify(tempProfileObj));
-                pouchDB.post(tempProfileObj, function (err, res) {
+
+
+                //Admin Login
+                var adminObj = {
+                    email: 'admin',
+                    password: 'eckball'
+                };
+
+
+                this.login(adminObj).then(
+                    function onSuccess(ele) {
+                        couchDB.signup(profile.email, profile.password, {
+                            metadata: {
+                                email: 'robin@boywonder.com',
+                                birthday: '1932-03-27T00:00:00.000Z',
+                                likes: ['acrobatics', 'short pants', 'sidekickin']
+                            }
+                        }, function (err, res) {
+                            $rootScope.$apply(function () {
+                                if (err) {
+                                    deferred.reject(err)
+                                } else {
+                                    deferred.resolve(res)
+                                }
+                            });
+                        });
+                    },
+                    function onError(err) {
+                        console.log(err);
+                    });
+
+
+                return deferred.promise;
+            }
+            ,
+
+            login: function (profile) {
+                var ajaxOpts = {
+                    ajax: {
+                        headers: {
+                            Authorization: 'Basic ' + window.btoa(profile.email + ':' + profile.password)
+                        }
+                    }
+                };
+                var deferred = $q.defer();
+                couchDB.login(profile.email, profile.password, ajaxOpts, function (err, res) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err)
                         } else {
                             deferred.resolve(res)
-                        }
-                    });
-                });
-                return deferred.promise;
-            },
-            all: function () {
-                console.log("SCHEINT MAN NIEEEE ZU BRAUCHEN DA IMMER NEW AUFGERUFEN WIRD!?");
-                var profiles = [];
-                pouchDB.allDocs({include_docs: true}, function (err, response) {
-
-                    angular.forEach(response.rows, function (value, key) {
-                        profiles.push(value.doc);
-                    }, console.debug(""));
-
-                });
-                return profiles;
-            },
-            get: function (profileId) {
-
-                return pouchDB.get(profileId, function (err, doc) {
-                });
-
-            },
-            removeAll: function () {
-                //   pouchDB.destroyDBs();
-                //  pouchDB.this.des
-
-            },
-            remove: function (id) {
-                var deferred = $q.defer();
-                pouchDB.get(id, function (err, doc) {
-                    $rootScope.$apply(function () {
-                        if (err) {
-                            deferred.reject(err);
-                        } else {
-                            pouchDB.remove(doc, function (err, res) {
-                                $rootScope.$apply(function () {
-                                    if (err) {
-                                        deferred.reject(err)
-                                    } else {
-                                        deferred.resolve(res)
-                                    }
-                                });
-                            });
                         }
                     });
                 });

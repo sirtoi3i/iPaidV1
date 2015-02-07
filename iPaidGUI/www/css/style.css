@@ -98,7 +98,7 @@ i.cat {
     color: #fff;
 }
 
-.loginView {
+.loginViewDEP {
     background-image: url(/img/bg2.jpg);
     background-size: cover;
 }
@@ -130,4 +130,8 @@ i.cat {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
+}
+
+.red {
+    color: red;
 }

@@ -1,1 +1,21 @@
-MEMBER
+<ion-item class="item item-icon-right" type="item-text-wrap">
+
+    <label class="item item-input">
+        <input type="email" placeholder="max.mustermann@gmail.com">
+    </label>
+    <i class="icon ion-ios7-plus-outline"></i>
+</ion-item>
+
+<ion-list>
+    <ion-item class="item-avatar  item-icon-right" ng-repeat="member in members" type="item-text-wrap"
+              href="#/app/purchases">
+        <img ng-src="{{member.face}}">
+
+        <h2>{{member.name}}</h2>
+
+        <p>{{member.email}}</p>
+        <a ng-click="showConfirm(member)">
+            <i class="icon ion-ios7-minus-outline"></i>
+        </a>
+    </ion-item>
+</ion-list>
