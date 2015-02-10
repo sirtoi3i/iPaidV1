@@ -144,6 +144,10 @@ i.cat {
     color: rgb(56, 126, 245);
 }
 
+.listView .bar-header.has-tabs-top {
+    border-bottom: none 0px;
+}
+
 /* SIDE MENU DARK */
 
 .darkSideMenu {
