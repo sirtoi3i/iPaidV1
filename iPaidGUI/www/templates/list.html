@@ -1,25 +1,25 @@
 <ion-view view-title="{{list.title}}">
     <ion-nav-buttons side="right">
-        <a href="#/app/newPurchase">
-            <button class="button button-icon button-clear button-positive ion-ios7-plus-empty">
+
+            <button ng-click="newPurchase()" class="button button-icon button-clear button-positive ion-ios7-plus-empty">
             </button>
-        </a>
+
     </ion-nav-buttons>
 
     <div class="tabs tabs-top tabs-icon-top">
-        <a class="tab-item" id="tab0" ng-class="{'tab-item-active': false}">
+        <a class="tab-item" ng-class="{'tab-item-active':  template == templates[0]}">
             <i class="icon ion-ios7-cart" ng-click="template=templates[0]"></i>
             Purchases
         </a>
-        <a class="tab-item" ng-class="{'tab-item-active': isTabActive()}">
+        <a class="tab-item" ng-class="{'tab-item-active':  template == templates[1]}">
             <i class="icon ion-ios7-people" ng-click="template=templates[1]"></i>
             Member
         </a>
-        <a class="tab-item" ng-class="{'tab-item-active': true}">
+        <a class="tab-item" ng-class="{'tab-item-active':  template == templates[2]}">
             <i class="icon ion-arrow-graph-up-right" ng-click="template=templates[2]"></i>
             Statistics
         </a>
-        <a class="tab-item" ng-class="{'tab-item-active': isTabActive()}">
+        <a class="tab-item" ng-class="{'tab-item-active':  template == templates[3]}">
             <i class="icon ion-gear-a" ng-click="template=templates[3]"></i>
             Settings
         </a>

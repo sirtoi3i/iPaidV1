@@ -1,35 +1,40 @@
 var remoteDB = {};
 var localDB = {};
 
-var dbName = "db5"
+var dbName = "db5";
 angular.module('starter.services', [])
 
-    .factory('pouchDB', function () {
-        //var localDB = new PouchDB("db4", {adapter: 'idb'});
-        localDB = new PouchDB(dbName, {adapter: 'websql'});
-        localDB.sync(remoteDB, {live: true});
-        //PouchDB.debug.disable();
-        PouchDB.debug.enable('*');
-        return localDB;
-    })
-    .factory('couchDB', function () {
+.factory('pouchDB', function () {
+
         var pouchOpts = {
             skipSetup: true
         };
 
         remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/" + dbName, pouchOpts);
-        return remoteDB;
-    })
+       // localDB = new PouchDB(dbName, {adapter: 'idb'});
+        localDB = new PouchDB(dbName, {adapter: 'websql'});
+        localDB.sync(remoteDB, {live: true});
+        //PouchDB.debug.disable();
+        PouchDB.debug.enable('*');
 
+        return {
+            localDB: function () {
+                return localDB;
+            },
+            remoteDB: function () {
+                return remoteDB;
+            }
+        }
+
+    })
     .
-    factory('pouchProfileWrapper', function ($q, $rootScope, couchDB) {
+    factory('pouchProfileWrapper', function ($q, $rootScope, pouchDB) {
 
 
         return {
             register: function (profile) {
 
                 var deferred = $q.defer();
-
 
                 //Admin Login
                 var adminObj = {
@@ -40,11 +45,12 @@ angular.module('starter.services', [])
 
                 this.login(adminObj).then(
                     function onSuccess(ele) {
-                        couchDB.signup(profile.email, profile.password, {
+                        pouchDB.remoteDB().signup(profile.email, profile.password, {
                             metadata: {
-                                email: 'robin@boywonder.com',
-                                birthday: '1932-03-27T00:00:00.000Z',
-                                likes: ['acrobatics', 'short pants', 'sidekickin']
+                                email: profile.email,
+                                lastName: profile.lastName,
+                                firstName: profile.firstName,
+                                password: profile.password
                             }
                         }, function (err, res) {
                             $rootScope.$apply(function () {
@@ -74,7 +80,7 @@ angular.module('starter.services', [])
                     }
                 };
                 var deferred = $q.defer();
-                couchDB.login(profile.email, profile.password, ajaxOpts, function (err, res) {
+                pouchDB.remoteDB().login(profile.email, profile.password, ajaxOpts, function (err, res) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err)
@@ -108,7 +114,7 @@ angular.module('starter.services', [])
                 };
 
                 var deferred = $q.defer();
-                pouchDB.post(tempPurchaseObj, function (err, res) {
+                pouchDB.localDB().post(tempPurchaseObj, function (err, res) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err)
@@ -132,7 +138,7 @@ angular.module('starter.services', [])
                 };
                 console.log("update purchase: " + purchase);
                 var deferred = $q.defer();
-                pouchDB.post(tempPurchaseObj, function (err, res) {
+                pouchDB.localDB().post(tempPurchaseObj, function (err, res) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err)
@@ -145,7 +151,7 @@ angular.module('starter.services', [])
             },
             all: function (l_id) {
                 var lists = [];
-                pouchDB.allDocs({include_docs: true}, function (err, response) {
+                pouchDB.localDB().allDocs({include_docs: true}, function (err, response) {
                     angular.forEach(response.rows, function (value, key) {
                         if (value.doc.type == "purchase" && value.doc.list_id == l_id)
                             lists.push(value.doc);
@@ -156,7 +162,7 @@ angular.module('starter.services', [])
             },
             get: function (purchaseId) {
                 console.log('get purchase');
-                return pouchDB.get(purchaseId, function (err, doc) {
+                return pouchDB.localDB().get(purchaseId, function (err, doc) {
                 });
 
             },
@@ -167,12 +173,12 @@ angular.module('starter.services', [])
             },
             remove: function (id) {
                 var deferred = $q.defer();
-                pouchDB.get(id, function (err, doc) {
+                pouchDB.localDB().get(id, function (err, doc) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err);
                         } else {
-                            pouchDB.remove(doc, function (err, res) {
+                            pouchDB.localDB().remove(doc, function (err, res) {
                                 $rootScope.$apply(function () {
                                     if (err) {
                                         deferred.reject(err)
@@ -206,7 +212,7 @@ angular.module('starter.services', [])
                 };
                 console.log(JSON.stringify(tempListObj));
                 var deferred = $q.defer();
-                pouchDB.put(tempListObj, function (err, res) {
+                pouchDB.localDB().put(tempListObj, function (err, res) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err)
@@ -221,7 +227,7 @@ angular.module('starter.services', [])
 
 
                 var lists = [];
-                pouchDB.allDocs({include_docs: true}, function (err, response) {
+                pouchDB.localDB().allDocs({include_docs: true}, function (err, response) {
                     angular.forEach(response.rows, function (value, key) {
                         if (value.doc.type == "list") {
                             lists.push(calculateListView(value.doc));
@@ -233,7 +239,7 @@ angular.module('starter.services', [])
             },
             get: function (listId) {
                 var deferred = $q.defer();
-                pouchDB.get(listId, function (err, doc) {
+                pouchDB.localDB().get(listId, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -250,12 +256,12 @@ angular.module('starter.services', [])
             },
             remove: function (id) {
                 var deferred = $q.defer();
-                pouchDB.get(id, function (err, doc) {
+                pouchDB.localDB().get(id, function (err, doc) {
                     $rootScope.$apply(function () {
                         if (err) {
                             deferred.reject(err);
                         } else {
-                            pouchDB.remove(doc, function (err, res) {
+                            pouchDB.localDB().remove(doc, function (err, res) {
                                 $rootScope.$apply(function () {
                                     if (err) {
                                         deferred.reject(err)
@@ -276,7 +282,7 @@ angular.module('starter.services', [])
     .factory('pouchListener', function ($rootScope, pouchDB) {
 
 
-        pouchDB.changes({
+        pouchDB.localDB().changes({
             continuous: true,
             include_docs: true,
             onChange: function (change) {

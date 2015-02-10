@@ -12,14 +12,14 @@
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
 
-  <ion-side-menu side="left">
-    <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
-    </ion-header-bar>
+  <ion-side-menu class="lightSideMenu" side="left">
     <ion-content>
       <ion-list>
+          <ion-item nav-clear class="headerItem"></ion-item>
+
         <ion-item style="background-color: #f5f5f5;" nav-clear menu-close href="#/app/lists" class="item item-icon-left">
-            <i class="icon ion-home"></i>
+            <!--<i class="icon ion-ios7-home-outline" style="color: #999999;"></i>-->
+            <i class="icon ion-ios7-home" style="color: rgb(68, 68, 68);"></i>
           Lists
         </ion-item>
 <!--
@@ -30,25 +30,32 @@
 -->
           
         <ion-item nav-clear menu-close href="#/app/members" class="item item-icon-left">
-          <i class="icon ion-arrow-graph-up-right"></i>
+          <i class="icon ion-arrow-graph-up-right" style="color: rgb(68, 68, 68);"></i>
              My Balance
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/profile/mklein@web.de" class="item item-icon-left">
-              <i class="icon ion-ios7-person"></i>
+             <!-- <i class="icon ion-ios7-person-outline" style="color: #999999;"></i>-->
+            <i class="icon ion-ios7-person" style="color: rgb(68, 68, 68);"></i>
             Profile
         </ion-item>
-          <ion-item nav-clear menu-close href="#/app/admin" class="item item-icon-left">
+
+          <ion-item nav-clear class="emptyItem">
+
+          </ion-item>
+        <!--  <ion-item nav-clear menu-close href="#/app/admin" class="item item-icon-left">
               <i class="icon ion-ios7-person"></i>
               Admin
-          </ion-item>
+          </ion-item>-->
       </ion-list>
+
     </ion-content>
      
-      <ion-footer-bar align-title="left" class="bar-assertive">
+      <ion-footer-bar align-title="left" class="logoutBtn">
           <div class="title" ng-click="logout()">
               Logout
           </div>
       </ion-footer-bar>
+
 
   </ion-side-menu>
 </ion-side-menus>

@@ -39,8 +39,7 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
     .controller('LoginCtrl', function ($scope, $ionicHistory, $state, pouchProfileWrapper, $ionicPopup) {
 
 
-        $scope.profile = {};
-
+        $scope.profile = {email: 'mklein@web.de', password : 'password' };
         $scope.login = function () {
 
 
@@ -74,8 +73,6 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
         };
 
         $scope.register = function () {
-
-
             pouchProfileWrapper.register($scope.profile).then(
                 function onSuccess(ele) {
                     console.log(ele);
@@ -91,13 +88,6 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
                     });
                     console.log(err);
                 });
-
-
-
-
-
-
-
         };
 
 
@@ -142,36 +132,40 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
             });
 
         //Provide Templates
-        $scope.templates = ['templates/list_purchases.html', 'templates/list_member.html', 'templates/list_statistics.html', 'templates/list_statistics.html'];
+        $scope.templates = ['templates/list_purchases.html', 'templates/list_member.html', 'templates/list_statistics.html', 'templates/list_settings.html'];
         $scope.template = $scope.templates[1];
 
 //Member
         $scope.members = [{
             "email": "tborlinghaus@gmail.com",
-            "name": "Tobi",
+            "firstName": "Tobias",
+            "lastName": "Borlinghaus",
             "balance": 87.34,
             "face": "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png",
             "_id": "2015-02-0sd6T14:37:53.926Z",
             "_rev": "3-e674eae815e299105191dc2276aa6086"
         }, {
             "email": "mklein@gmail.com",
-            "name": "Michel",
+            "firstName": "Michel",
+            "lastName": "Klein",
             "balance": -71.59,
-            "face": "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png",
+            "face": "https://avatars3.githubusercontent.com/u/11214?v=3&s=460",
             "_id": "2015-02-06T09:0ads2:08.919Z",
             "_rev": "2-bb42c549db523b7edba82f855e2f1e38"
         }, {
             "email": "dclasen@gmail.com",
-            "name": "Daniel",
+            "firstName": "Daniel",
+            "lastName": "Clasen",
             "balance": -23.19,
-            "face": "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png",
+            "face": "https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg",
             "_id": "2015-02-06T12:19:39.as305Z",
             "_rev": "3-c960631fac433830bd6ce43f8370032f"
         }, {
             "email": "mmimi@gmail.com",
-            "name": "Mimi",
+            "firstName": "Mimi",
+            "lastName": "Kornau",
             "balance": 7.44,
-            "face": "https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png",
+            "face": "https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg",
             "_id": "2015-02-06T14:dssad:53.926Z",
             "_rev": "3-e674eae815e299105191dc2276aa6086"
         }];
@@ -212,6 +206,8 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
             $scope.purchases.push(p);
 
         });
+        $scope.testVar={};
+        $scope.testVar="TEST";
 
 
         //New Purchase
@@ -228,7 +224,7 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
         };
 
         $scope.savePurchase = function () {
-            console.log("Date: " + $scope.purchase.date + " for purchase: " + $scope.purchase.title);
+            console.log("Date: " + $scope.purchase.date + " for purchase: " + $scope.purchase.title + " for list: " + $stateParams.listId);
             pouchPurchaseWrapper.add($scope.purchase, $stateParams.listId).then(function (res) {
                 console.log(res);
             }, function (reason) {
@@ -305,6 +301,15 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
         $scope.updateTitle = function (title) {
             $scope.purchase.title = title;
             pouchPurchaseWrapper.update($scope.purchase).then(function (res) {
+                console.log(res);
+            }, function (reason) {
+                console.log(reason);
+            });
+            $ionicHistory.goBack();
+        };
+
+        $scope.updatePurchase = function (purchase) {
+            pouchPurchaseWrapper.update(purchase).then(function (res) {
                 console.log(res);
             }, function (reason) {
                 console.log(reason);

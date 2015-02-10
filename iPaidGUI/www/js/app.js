@@ -85,6 +85,8 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
+
+
         /*
 
          .state('app.list.sub', {
@@ -118,16 +120,21 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
          templateUrl: "templates/list_statistics.html"
          }
          }
-         })*/
+         })
 
-        .state('app.newPurchase', {
-            url: "/newPurchase",
-            views: {
-                'menuContent': {
-                    templateUrl: "templates/newPurchase.html"
-                }
-            }
-        })
+
+         .state('app.newPurchase', {
+         url: "/newPurchase",
+         views: {
+         'menuContent': {
+         templateUrl: "templates/newPurchase.html"
+         }
+         }
+         })
+
+         */
+
+
 
         .state('app.purchaseTitle', {
             url: "/purchaseTitle/:purchaseId",

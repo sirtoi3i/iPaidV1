@@ -1,11 +1,9 @@
 <ion-list>
-    <ion-item class="item-avatar " ng-repeat="member in members" type="item-text-wrap"
-              href="#/app/purchases">
+    <ion-item class="item-avatar " ng-repeat="member in members" type="item-text-wrap">
         <img ng-src="{{member.face}}">
-
-        <div style="line-height: 50px;">{{member.name}}
-            <div style="float:right;" ng-class="{ red: member.balance < 0 }"> {{member.balance}} €</div>
-        </div>
+        <h2>{{member.firstName}} {{member.lastName}}</h2>
+        <!--<div style="float:left;">{{member.email}}</div>-->
+        <div style="float:right;" ng-class="{ red: member.balance < 0 }"> {{member.balance}} €</div>
 
     </ion-item>
 </ion-list>
