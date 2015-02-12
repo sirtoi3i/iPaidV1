@@ -1,0 +1,31 @@
+<ion-view view-title="New List">
+
+    <ion-nav-buttons side="right">
+
+        <button class="button button-clear button-positive" ng-click="saveList()">
+            Done
+        </button>
+
+    </ion-nav-buttons>
+
+
+    <ion-content>
+
+        <form>
+            <div class="row">
+                <div class="col">
+                    <a href="#" ng-click="openCat()">
+                        <i id="listCat" ng-class="list.icon"></i>
+                    </a>
+                </div>
+                <div class="col col-75">
+                    <span style="float:left">Title</span>
+                    <br>
+                    <input type="text" placeholder="WG Mannheim" ng-model="list.title"/>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+
+
+</ion-view>

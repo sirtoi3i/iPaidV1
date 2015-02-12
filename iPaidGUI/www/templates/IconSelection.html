@@ -1,10 +1,6 @@
 <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-<ion-modal-view>
-    <ion-header-bar>
-        <button class="button button-clear button-positive" ng-click="closeCat()">Cancel</button>
-        <h1 class="title">List Icon</h1>
-    </ion-header-bar>
-    <ion-content> 
+<ion-view title="Icon Selection">
+       <ion-content>
         <div class="row">
             <div class="col"> <i ng-click="returnCat($event)" class="icon ion-ios7-person cat"></i></div>
             <div class="col"> <i ng-click="returnCat($event)" class="icon ion-help-buoy cat"></i></div>
@@ -116,4 +112,4 @@
             <div class="col"> <i ng-click="returnCat($event)" class="icon ion-model-s cat"></i></div>
         </div>
     </ion-content>
-</ion-modal-view>
+</ion-view>

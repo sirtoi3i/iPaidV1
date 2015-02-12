@@ -64,7 +64,7 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
         })
 
 
-        .state('app.newList', {
+       /* .state('app.newList', {
             url: "/newList",
             views: {
                 'menuContent': {
@@ -73,7 +73,7 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
                 }
             }
         })
-
+*/
 
         .state('app.list', {
             url: "/lists/:listId",
@@ -134,7 +134,15 @@ ang.config(function ($stateProvider, $urlRouterProvider) {
 
          */
 
-
+        .state('app.listIcon', {
+            url: "/listIcon/:purchaseId",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/IconSelection.html",
+                    controller: 'ListsCtrl'
+                }
+            }
+        })
 
         .state('app.purchaseTitle', {
             url: "/purchaseTitle/:purchaseId",

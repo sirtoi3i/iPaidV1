@@ -1,27 +1,32 @@
-<ion-view view-title="Lists">
+<ion-view view-title="Lists" class="lists">
 
     <ion-nav-buttons side="right">
-        <a href="#/app/newList">
-            <button class="button button-icon button-clear button-positive ion-ios7-plus-empty">
+
+            <button ng-click="newList()" class="button button-icon button-clear button-positive ion-ios7-plus-empty">
             </button>
-        </a>
+
     </ion-nav-buttons>
-    
-  <ion-content>
 
-      <ion-list>
+    <ion-content>
 
-      <ion-item class="item-icon-left item-icon-right" ng-repeat="list in lists" type="item-text-wrap"
-                  href="#/app/lists/{{list._id}}">
-        <i class="{{list.icon}}"></i>
 
-          <h2>{{list.title}}</h2>
+        <ion-list>
 
-          <div style="float:left">{{list.date}}</div>
-          <div style="float:right"> {{list.balance}} €</div>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+            <ion-item class="item item-avatar item-icon-right" ng-repeat="list in lists" type="item-text-wrap"
+                      href="#/app/lists/{{list._id}}">
+
+                <i class="{{list.icon}} social-icon"></i>
+
+
+                <h2>{{list.title}}</h2>
+
+                <div style="float:left">{{list.date}}</div>
+                <div style="float:right"> {{list.balance}} €</div>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+        </ion-list>
+
+
+    </ion-content>
 </ion-view>
 

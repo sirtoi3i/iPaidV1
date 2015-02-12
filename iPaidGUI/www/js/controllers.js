@@ -451,7 +451,7 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
 
      })*/
 
-    .controller('ListsCtrl', function ($scope, pouchListener, pouchListWrapper) {
+    .controller('ListsCtrl', function ($scope, $state, $stateParams, pouchListener, pouchListWrapper, $ionicModal, $ionicPopup, $ionicHistory) {
 
 
         $scope.remove = function (id) {
@@ -487,6 +487,61 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
             }
         });
 
+        $scope.list = {};
+        $scope.setListIcon = function ($event) {
+            $scope.list.icon = $event.currentTarget.className;
+            $ionicHistory.goBack();
+        }
+
+        //New List
+        $ionicModal.fromTemplateUrl('templates/newList.html', {
+            id: '1',
+            scope: $scope
+        }).then(function (modal) {
+            $scope.newListModal = modal;
+        });
+        $scope.closeNewList = function () {
+            $scope.newListModal.hide();
+        };
+        $scope.newList = function () {
+            $scope.list.icon = "icon ion-plus cat";
+            $scope.list.title = "";
+            $scope.newListModal.show();
+        };
+
+        $scope.saveList = function () {
+            pouchListWrapper.add($scope.list).then(function (res) {
+                console.log("******** Response **********");
+                console.log(JSON.stringify(res));
+                $state.go('app.list', {listId : res.id});
+            }, function (reason) {
+                console.log(reason);
+            });
+            $scope.newListModal.hide();
+
+        };
+
+        //CAT Modal
+        $ionicModal.fromTemplateUrl('templates/catChoice.html', {
+            id: '2',
+            scope: $scope
+        }).then(function (modal) {
+            $scope.listIconModal = modal;
+        });
+
+         $scope.returnCat = function ($event) {
+            $scope.list.icon = $event.currentTarget.className;
+            $scope.listIconModal.hide();
+        }
+
+        $scope.closeCat = function () {
+            $scope.listIconModal.hide();
+        };
+
+        $scope.openCat = function () {
+            console.log("open this motherf**king cat");
+            $scope.listIconModal.show();
+        };
 
     })
 
@@ -515,14 +570,27 @@ angular.module('starter.controllers', ["chart.js"]).controller('AppCtrl', functi
             $scope.modal.show();
         };
 
-
-        $scope.saveList = function () {
+       /* $scope.saveList = function () {
             pouchListWrapper.add($scope.list).then(function (res) {
                 console.log(res);
             }, function (reason) {
                 console.log(reason);
             });
             $ionicHistory.goBack();
+            //$scope.modal.hide();
         };
+*/
+        $scope.$on('newPurch', function (event, p) {
+            var push = true;
+            $scope.purchases.forEach(function (entry) {
+                if (entry._id == p._id) {
+                    push = false;
+                }
+            });
+            $scope.purchases.push(p);
+
+        });
+
+
 
     })

@@ -1,31 +1,39 @@
-<ion-view view-title="New List">
-
-    <ion-nav-buttons side="right">
-
-        <button class="button button-clear button-positive" ng-click="saveList()">
-            Done
-        </button>
-
-    </ion-nav-buttons>
+<ion-modal-view class="newList">
+    <ion-header-bar>
+        <button class="button button-clear button-positive" ng-click="closeNewList()">Cancel</button>
+        <h1 class="title">New List</h1>
+        <button class="button button-clear button-positive" ng-click="saveList()">Done</button>
+    </ion-header-bar>
 
 
     <ion-content>
 
-        <form>
-            <div class="row">
-                <div class="col">
-                    <a href="#" ng-click="openCat()">
-                        <i id="listCat" ng-class="list.icon"></i>
-                    </a>
-                </div>
-                <div class="col col-75">
-                    <span style="float:left">Title</span>
-                    <br>
-                    <input type="text" placeholder="WG Mannheim" ng-model="list.title"/>
+
+        <!--<div class="row">
+            <div class="col">
+                <div class="circle-icon-holder" ng-click="openCat()">
+                    <span class="{{list.icon}} circle-icon"></span>
                 </div>
             </div>
-        </form>
+            <div class="col col-75">
+                <span style="color: red;">Please enter your list tile and chose a list icon</span>
+
+            </div>
+        </div>-->
+
+        <ion-list>
+            <ion-item style="text-align: center; height: 100px; padding-top: 25px;" class="item item-avatar item-icon-right" type="item-text-wrap">
+
+                <i style="cursor: pointer; top: 20px;" class="{{list.icon}} social-icon" ng-click="openCat()"></i>
+
+                <h2 style="color: #999999; white-space: pre;">Please enter a list title and chose a list icon</h2>
+            </ion-item>
+        </ion-list>
+        <label class="item item-input">
+            <span class="input-label">Title</span>
+            <input type="text" ng-model="list.title">
+        </label>
+
     </ion-content>
 
-
-</ion-view>
+</ion-modal-view>

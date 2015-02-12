@@ -6,13 +6,10 @@ angular.module('starter.services', [])
 
 .factory('pouchDB', function () {
 
-        var pouchOpts = {
-            skipSetup: true
-        };
 
-        remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/" + dbName, pouchOpts);
-       // localDB = new PouchDB(dbName, {adapter: 'idb'});
-        localDB = new PouchDB(dbName, {adapter: 'websql'});
+        remoteDB = new PouchDB("http://vs245.codepleasure.org:5984/" + dbName);
+         localDB = new PouchDB(dbName, {adapter: 'idb'});
+        // localDB = new PouchDB(dbName, {adapter: 'websql'});
         localDB.sync(remoteDB, {live: true});
         //PouchDB.debug.disable();
         PouchDB.debug.enable('*');
